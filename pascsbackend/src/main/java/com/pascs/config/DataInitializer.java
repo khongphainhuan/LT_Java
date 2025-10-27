@@ -18,6 +18,8 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("🚀 Starting data initialization...");
+
         // Tạo user admin mẫu nếu chưa tồn tại
         if (userRepository.findByUsername("admin").isEmpty()) {
             User admin = new User();
@@ -54,5 +56,21 @@ public class DataInitializer implements CommandLineRunner {
             userRepository.save(citizen);
             System.out.println("✅ Citizen user created: citizen / citizen123");
         }
+
+        // Tạo thêm 1 citizen nữa để test
+        if (userRepository.findByUsername("hongphuc").isEmpty()) {
+            User citizen2 = new User();
+            citizen2.setUsername("hongphuc");
+            citizen2.setEmail("hongphuc@example.com");
+            citizen2.setPassword(passwordEncoder.encode("123456"));
+            citizen2.setFullName("Trần Hồng Phúc");
+            citizen2.setRole(User.UserRole.CITIZEN);
+            citizen2.setPriorityEligible(false);
+            userRepository.save(citizen2);
+            System.out.println("✅ Citizen user created: hongphuc / 123456");
+        }
+
+        System.out.println("🎉 Sample data initialization completed!");
+        System.out.println("📊 Total users in database: " + userRepository.count());
     }
 }

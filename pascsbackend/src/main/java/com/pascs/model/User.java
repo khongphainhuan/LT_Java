@@ -10,22 +10,43 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
     private String fullName;
     private String phoneNumber;
     private String address;
-    private boolean priorityEligible;
+    private boolean priorityEligible = false;
     private boolean enabled = true;
+    
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserRole role;
 
     public enum UserRole {
         ADMIN, STAFF, CITIZEN
     }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+        if (this.role == null) {
+            this.role = UserRole.CITIZEN;
+        }
+    }
+
+    // Constructor mặc định
+    public User() {}
 
     // Getter & Setter
     public Long getId() { return id; }
