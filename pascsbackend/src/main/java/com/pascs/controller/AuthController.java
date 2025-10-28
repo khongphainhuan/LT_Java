@@ -33,7 +33,7 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
-
+    // Đăng nhập : /api/auth/signin
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager
@@ -56,7 +56,7 @@ public class AuthController {
                 userDetails.getEmail(),
                 role));
     }
-
+    // Đăng ký : /api/auth/signup
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {

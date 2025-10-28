@@ -1,3 +1,4 @@
+///api/users/*
 package com.pascs.controller;
 
 import com.pascs.model.User;
@@ -30,7 +31,7 @@ public class UserController {
     @Autowired
     PasswordEncoder encoder;
 
-    // Lấy thông tin profile của user hiện tại
+    // API lấy thông tin profile của user hiện tại
     @GetMapping("/profile")
     @PreAuthorize("hasRole('CITIZEN') or hasRole('STAFF') or hasRole('ADMIN')")
     public ResponseEntity<?> getCurrentUserProfile() {
@@ -57,7 +58,7 @@ public class UserController {
         }
     }
 
-    // Cập nhật thông tin profile
+    // API : Cập nhật thông tin profile của user hiện tại
     @PutMapping("/profile")
     @PreAuthorize("hasRole('CITIZEN') or hasRole('STAFF') or hasRole('ADMIN')")
     public ResponseEntity<?> updateUserProfile(@Valid @RequestBody UpdateProfileRequest updateRequest) {
@@ -91,7 +92,7 @@ public class UserController {
         }
     }
 
-    // Đổi mật khẩu
+    // API : Đổi mật khẩu của user hiện tại 
     @PutMapping("/change-password")
     @PreAuthorize("hasRole('CITIZEN') or hasRole('STAFF') or hasRole('ADMIN')")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
@@ -118,7 +119,7 @@ public class UserController {
         }
     }
 
-    // ADMIN: Lấy danh sách tất cả users
+    // API ADMIN: Lấy danh sách tất cả user
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllUsers() {
@@ -126,7 +127,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    // ADMIN: Cập nhật role user
+    // API ADMIN: Cập nhật vai trò của user
     @PutMapping("/{userId}/role")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateUserRole(@PathVariable Long userId, @RequestParam User.UserRole role) {
