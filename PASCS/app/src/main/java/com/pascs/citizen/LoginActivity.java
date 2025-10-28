@@ -1,4 +1,4 @@
-package com.pascs.citizen.activities;
+package com.pascs.citizen;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast; // Thêm thư viện Toast để test click
+import android.content.Intent;
 
 import com.google.android.material.textfield.TextInputEditText; // Dùng cái này
 import com.pascs.citizen.R;
@@ -50,12 +51,11 @@ public class LoginActivity extends AppCompatActivity {
         tvGoToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Tạm thời hiển thị thông báo
-                Toast.makeText(LoginActivity.this, "Chuyển sang màn hình Đăng ký", Toast.LENGTH_SHORT).show();
+                // TẠO MỘT "Ý ĐỊNH" (INTENT) ĐỂ CHUYỂN MÀN HÌNH
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
 
-                // TODO: Sau này sẽ tạo RegisterActivity và chuyển màn hình
-                // Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                // startActivity(intent);
+                // THỰC THI "Ý ĐỊNH" ĐÓ
+                startActivity(intent);
             }
         });
     }
