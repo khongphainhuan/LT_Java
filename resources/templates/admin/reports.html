@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Báo cáo thống kê | PASCS</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <div class="flex h-screen">
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+    <div class="flex-1 flex flex-col">
+      <div th:replace="fragments/header :: header"></div>
+
+      <main class="p-6">
+        <h1 class="text-2xl font-semibold text-blue-700 mb-6">📈 Báo cáo & Thống kê</h1>
+
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+          <div class="flex gap-4 mb-4">
+            <select class="border rounded px-3 py-2">
+              <option>Chọn loại báo cáo</option>
+            </select>
+            <input type="month" class="border rounded px-3 py-2">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Xem báo cáo</button>
+          </div>
+
+          <div class="h-64 bg-gray-100 flex items-center justify-center text-gray-400 italic">
+            (Placeholder biểu đồ / bảng báo cáo)
+          </div>
+        </div>
+      </main>
+
+      <div th:replace="fragments/footer :: footer"></div>
+    </div>
+  </div>
+</body>
+</html>
