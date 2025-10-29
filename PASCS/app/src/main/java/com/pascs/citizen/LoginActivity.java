@@ -14,7 +14,7 @@ import com.pascs.citizen.R;
 public class LoginActivity extends AppCompatActivity {
 
     // 1. Khai báo các biến UI
-    TextInputEditText etEmail, etPassword;
+    TextInputEditText etUsername, etPassword;
     Button btnLogin;
     TextView tvGoToRegister;
 
@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // 3. Ánh xạ (tìm) các view từ XML
-        etEmail = findViewById(R.id.etEmail);
+        etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvGoToRegister = findViewById(R.id.tvGoToRegister);
@@ -37,13 +37,15 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Tạm thời hiển thị thông báo
-                Toast.makeText(LoginActivity.this, "Đang xử lý đăng nhập...", Toast.LENGTH_SHORT).show();
 
                 // TODO: Sau này sẽ gọi API của Mạnh tại đây
-                // String email = etEmail.getText().toString();
-                // String password = etPassword.getText().toString();
-                // callLoginApi(email, password);
+
+                // Tạm thời, chúng ta sẽ chuyển thẳng sang MainActivity
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+
+                // Gọi finish() để người dùng không thể "Back" lại màn hình Login
+                finish();
             }
         });
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    tools:context=".activities.LoginActivity">
+    tools:context=".LoginActivity"> <!-- Chú ý: Tên file .java của bạn là LoginActivity, không phải .activities.LoginActivity -->
 
     <TextView
         android:id="@+id/tvLoginTitle"
@@ -20,8 +20,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="60dp"/>
 
+    <!-- === ĐÃ SỬA KHỐI NÀY === -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilEmail"
+        android:id="@+id/tilUsername"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,14 +30,16 @@
         app:layout_constraintTop_toBottomOf="@id/tvLoginTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:hint="Email hoặc SĐT">
+        android:hint="Tên đăng nhập"> <!-- Sửa Hint -->
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"/>
+            android:id="@+id/etUsername" <!-- Sửa ID -->
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"/> <!-- Sửa InputType -->
     </com.google.android.material.textfield.TextInputLayout>
+    <!-- ========================= -->
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilPassword"
@@ -44,39 +47,39 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tilEmail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:hint="Mật khẩu"
-        app:passwordToggleEnabled="true">
+        app:layout_constraintTop_toBottomOf="@id/tilUsername" <!-- Sửa liên kết -->
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:hint="Mật khẩu"
+    app:passwordToggleEnabled="true">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập"
-        android:padding="12dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/tilPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:inputType="textPassword"/>
+</com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tvGoToRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chưa có tài khoản? Đăng ký ngay"
-        android:padding="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+<Button
+android:id="@+id/btnLogin"
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:text="Đăng nhập"
+android:padding="12dp"
+android:layout_marginTop="32dp"
+app:layout_constraintTop_toBottomOf="@id/tilPassword"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<TextView
+android:id="@+id/tvGoToRegister"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Chưa có tài khoản? Đăng ký ngay"
+android:padding="8dp"
+android:layout_marginTop="16dp"
+app:layout_constraintTop_toBottomOf="@id/btnLogin"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
