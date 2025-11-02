@@ -1,12 +1,10 @@
 plugins {
-    alias(libs.plugins.android.application)
+    id 'com.android.application' // (Đây là cú pháp Groovy)
 }
 
 android {
     namespace 'com.pascs.citizen'
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk 36 // (Sửa lại cú pháp Groovy)
 
     defaultConfig {
         applicationId "com.pascs.citizen"
@@ -24,37 +22,37 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    // === ĐÃ SỬA LỖI (DÙNG JAVA 11 VÀ CÓ DẤU =) ===
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_11 // «« DÙNG 1.11 VÀ CÓ =
+        targetCompatibility = JavaVersion.VERSION_11 // «« DÙNG 1.11 VÀ CÓ =
     }
+    // ===========================================
 }
 
 dependencies {
-    // Các dependencies có sẵn (GIỮ NGUYÊN)
+
+    // === CÚ PHÁP GROOVY (Dùng dấu nháy đơn) ===
+
+    // (Chúng ta sẽ "gõ cứng" (hardcode) tất cả các thư viện
+    //  để dứt điểm mọi lỗi "libs" (biệt danh) và lỗi "Sync")
+
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.activity:activity:1.8.0'
+
+    // 1. Dùng cho 'com.google.android.material.textfield.TextInputLayout'
+    implementation 'com.google.android.material:material:1.10.0'
+
+    // 2. Dùng cho 'app:layout_constraintTop_to...'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-
-    // Retrofit - Gọi API
+    // === THƯ VIỆN API (Đã gõ cứng) ===
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    // OkHttp - Logging API calls
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
-
-    // Glide - Load hình ảnh
-    implementation 'com.github.bumptech.glide:glide:4.15.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
-
-    // Firebase - Push notifications (tạm comment, thêm sau)
-    // implementation platform('com.google.firebase:firebase-bom:32.7.0')
-    // implementation 'com.google.firebase:firebase-messaging'
-
-    // RecyclerView - Hiển thị danh sách
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-
-    // CardView - Card đẹp
-    implementation 'androidx.cardview:cardview:1.0.0'
+    // === THƯ VIỆN TEST (Giữ nguyên) ===
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
