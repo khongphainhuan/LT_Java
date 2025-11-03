@@ -24,9 +24,10 @@ android {
     }
 
     // === ĐÃ SỬA LỖI (DÙNG JAVA 11 VÀ CÓ DẤU =) ===
+    // (Lỗi cú pháp "VERSION_1_11" đã được sửa thành "VERSION_11")
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11 // «« DÙNG 1.11 VÀ CÓ =
-        targetCompatibility = JavaVersion.VERSION_11 // «« DÙNG 1.11 VÀ CÓ =
+        sourceCompatibility = JavaVersion.VERSION_11 // «« ĐÃ SỬA (KHÔNG CÓ _1_)
+        targetCompatibility = JavaVersion.VERSION_11 // «« ĐÃ SỬA (KHÔNG CÓ _1_)
     }
     // ===========================================
 }
@@ -34,9 +35,6 @@ android {
 dependencies {
 
     // === CÚ PHÁP GROOVY (Dùng dấu nháy đơn) ===
-
-    // (Chúng ta sẽ "gõ cứng" (hardcode) tất cả các thư viện
-    //  để dứt điểm mọi lỗi "libs" (biệt danh) và lỗi "Sync")
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.activity:activity:1.8.0'
@@ -51,8 +49,21 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
+    // === THƯ VIỆN GSON (Cần cho Model @SerializedName) ===
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    // === ĐÃ THÊM (SỬA LỖI "package okhttp3.logging does not exist") ===
+    // (BOM - Bill of Materials - để đảm bảo các thư viện OkHttp đồng bộ)
+    implementation platform('com.squareup.okhttp3:okhttp-bom:4.10.0')
+    // (Thư viện OkHttp lõi)
+    implementation 'com.squareup.okhttp3:okhttp'
+    // (Thư viện Logging Interceptor mà ApiConfig.java cần)
+    implementation 'com.squareup.okhttp3:logging-interceptor'
+    // =================================================================
+
     // === THƯ VIỆN TEST (Giữ nguyên) ===
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
+

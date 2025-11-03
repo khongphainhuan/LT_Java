@@ -1,32 +1,48 @@
 package com.pascs.citizen.models;
 
-public class User {
-    private int id;
-    private String name;
-    private String email;
-    private String phone;
-    private String address;
+import com.google.gson.annotations.SerializedName;
 
-    // Constructor
-    public User(int id, String name, String email, String phone, String address) {
+/**
+ * Model (Mô hình) POJO (Mô hình) cho đối tượng User (Người dùng).
+ * "Khớp" (Match) 100% với Backend (Phần sau) API (API) (API) (API) và SharedPrefManager (Trình quản lý SharedPref).
+ */
+public class User {
+
+    // Dùng @SerializedName để "khớp" (match) 100% với JSON (Dữ liệu JSON) của Backend (Phần sau)
+    @SerializedName("id")
+    private int id;
+
+    @SerializedName("username")
+    private String username;
+
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("fullName")
+    private String fullName; // Dùng cho Giao diện (UI) (UI) (Giao diện (UI)) Đăng ký (Register)
+
+    // Hàm (Function) tạo (Constructor) (dùng cho SharedPrefManager (Trình quản lý SharedPref))
+    public User(int id, String username, String email, String fullName) {
         this.id = id;
-        this.name = name;
+        this.username = username;
         this.email = email;
-        this.phone = phone;
-        this.address = address;
+        this.fullName = fullName;
     }
 
-    // Getters
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public String getEmail() { return email; }
-    public String getPhone() { return phone; }
-    public String getAddress() { return address; }
+    // Getters (Trình lấy) (Cần thiết cho Giao diện (UI) (UI) (Giao diện (UI)) & Logic (Logic) (Logic) (Logic))
+    public int getId() {
+        return id;
+    }
 
-    // Setters
-    public void setId(int id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setEmail(String email) { this.email = email; }
-    public void setPhone(String phone) { this.phone = phone; }
-    public void setAddress(String address) { this.address = address; }
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
 }
