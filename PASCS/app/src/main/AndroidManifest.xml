@@ -22,7 +22,7 @@
             - SỬA exported="false"
         -->
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="false" />
 
         <!--
@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
 
-        <!-- (Sau này chúng ta sẽ thêm RegisterActivity ở đây) -->
+        <activity android:name=".RegisterActivity" />
 
     </application>
 

@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Sử dụng CoordinatorLayout để cho phép FloatingActionButton (fabLogout)
+    hiển thị đẹp hơn ở góc dưới.
+-->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".activities.MainActivity">
 
-    <!-- App Bar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:title="PASCS"
-            app:titleTextColor="@android:color/white"/>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Main Content -->
+    <!-- Phần nội dung chính, cho phép cuộn -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,225 +22,138 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Welcome Card -->
+            <!--
+            ============================================================
+            === CÁC ID BẠN CẦN LÀ Ở ĐÂY ===
+            ============================================================
+            -->
+
+            <!-- TextView Chào mừng -->
+            <TextView
+                android:id="@+id/tvWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chào mừng bạn!"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- Card Lấy số thứ tự -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTakeQueue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardElevation="4dp"
-                app:cardCornerRadius="12dp">
-
+                app:cardCornerRadius="8dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/tvWelcome"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Xin chào, Nguyễn Văn A"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="?attr/colorPrimary"/>
-
+                    android:padding="16dp"
+                    android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Chào mừng đến với PASCS"
-                        android:textSize="14sp"/>
+                        android:text="Lấy số thứ tự"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lấy số thứ tự xếp hàng trực tuyến"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Quick Actions -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dịch vụ"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"/>
-
-            <GridLayout
+            <!-- Card Đặt lịch hẹn -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardBookAppointment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2"
-                android:alignmentMode="alignMargins">
+                android:layout_marginBottom="16dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đặt lịch hẹn"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đặt lịch hẹn làm việc với cán bộ"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <!-- Button 1: Lấy số -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardTakeQueue"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_row="0"
-                    android:layout_column="0"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    app:cardElevation="4dp"
-                    app:cardCornerRadius="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🎫"
-                            android:textSize="32sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Lấy số"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Button 2: Đặt lịch -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardBookAppointment"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_row="0"
-                    android:layout_column="1"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    app:cardElevation="4dp"
-                    app:cardCornerRadius="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="📅"
-                            android:textSize="32sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Đặt lịch"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Button 3: Theo dõi -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardTrackApplication"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_row="1"
-                    android:layout_column="0"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    app:cardElevation="4dp"
-                    app:cardCornerRadius="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="📋"
-                            android:textSize="32sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Theo dõi"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Button 4: Phản hồi -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardFeedback"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_row="1"
-                    android:layout_column="1"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    app:cardElevation="4dp"
-                    app:cardCornerRadius="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="⭐"
-                            android:textSize="32sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Phản hồi"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </GridLayout>
-
-            <!-- Recent Applications -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Card Theo dõi hồ sơ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTrackApplication"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hồ sơ gần đây"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="16dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Theo dõi hồ sơ"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tra cứu tình trạng xử lý hồ sơ của bạn"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/tvNoApplications"
-                android:layout_width="wrap_content"
+            <!-- Card Góp ý -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardFeedback"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Chưa có hồ sơ nào"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
-                android:visibility="visible"/>
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gửi góp ý"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gửi phản ánh, kiến nghị về dịch vụ"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Floating Action Button - Logout -->
+    <!-- Nút Đăng xuất (Floating Action Button) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@android:drawable/ic_lock_power_off"
+        android:contentDescription="Đăng xuất"
+        app:srcCompat="@android:drawable/ic_menu_revert"
         app:tint="@android:color/white"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
