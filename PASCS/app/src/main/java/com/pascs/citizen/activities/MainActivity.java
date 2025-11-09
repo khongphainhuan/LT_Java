@@ -11,6 +11,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pascs.citizen.LoginActivity;
 import com.pascs.citizen.R;
+import com.pascs.citizen.TakeQueueActivity;
 import com.pascs.citizen.models.User;
 import com.pascs.citizen.utils.SharedPrefManager;
 
@@ -18,7 +19,7 @@ import com.pascs.citizen.utils.SharedPrefManager;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvWelcome;
-    private MaterialCardView cardTakeQueue, cardBookAppointment, cardTrackApplication, cardFeedback;
+    private MaterialCardView cardTakeQueue, cardQueueStatus, cardBookAppointment, cardTrackApplication, cardFeedback;
     private FloatingActionButton fabLogout;
 
     @Override
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         tvWelcome = findViewById(R.id.tvWelcome);
         cardTakeQueue = findViewById(R.id.cardTakeQueue);
+        cardQueueStatus = findViewById(R.id.cardQueueStatus);
         cardBookAppointment = findViewById(R.id.cardBookAppointment);
         cardTrackApplication = findViewById(R.id.cardTrackApplication);
         cardFeedback = findViewById(R.id.cardFeedback);
@@ -61,19 +63,32 @@ public class MainActivity extends AppCompatActivity {
 
         // Gán (Set) Click (Nhấn) Listeners (Trình nghe)
         cardTakeQueue.setOnClickListener(v -> {
-            Toast.makeText(this, "Chức năng Lấy số đang phát triển", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, TakeQueueActivity.class);
+            startActivity(intent);
+        });
+
+        cardQueueStatus.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,
+                    com.pascs.citizen.QueueStatusActivity.class);
+            startActivity(intent);
         });
 
         cardBookAppointment.setOnClickListener(v -> {
-            Toast.makeText(this, "Chức năng Đặt lịch đang phát triển", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,
+                    com.pascs.citizen.BookAppointmentActivity.class);
+            startActivity(intent);
         });
 
         cardTrackApplication.setOnClickListener(v -> {
-            Toast.makeText(this, "Chức năng Theo dõi hồ sơ đang phát triển", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,
+                    com.pascs.citizen.ApplicationListActivity.class);
+            startActivity(intent);
         });
 
         cardFeedback.setOnClickListener(v -> {
-            Toast.makeText(this, "Chức năng Phản hồi đang phát triển", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,
+                    com.pascs.citizen.FeedbackActivity.class);
+            startActivity(intent);
         });
 
         fabLogout.setOnClickListener(v -> handleLogout());

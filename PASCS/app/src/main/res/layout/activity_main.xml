@@ -33,7 +33,7 @@
                 android:id="@+id/tvWelcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chào mừng bạn!"
+                android:text="Xin chào công dân!"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="24dp"/>
@@ -121,6 +121,7 @@
                 android:id="@+id/cardFeedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 app:cardElevation="4dp"
                 app:cardCornerRadius="8dp">
                 <LinearLayout
@@ -138,6 +139,32 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Gửi phản ánh, kiến nghị về dịch vụ"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card Xem trạng thái hàng chờ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardQueueStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Xem trạng thái hàng chờ"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Theo dõi số thứ tự và thời gian chờ"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

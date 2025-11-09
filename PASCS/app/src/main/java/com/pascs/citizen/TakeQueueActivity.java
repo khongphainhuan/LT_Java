@@ -49,6 +49,7 @@ public class TakeQueueActivity extends AppCompatActivity {
         // --- Cài đặt Toolbar ---
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Lấy số thứ tự");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Hiển thị nút Back
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }

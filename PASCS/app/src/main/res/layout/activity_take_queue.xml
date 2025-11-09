@@ -1,32 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    File layout (giao diện) này sẽ khớp với file logic 'TakeQueueActivity.java'
-    mà mình đã gửi bạn ở lần trước.
--->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".TakeQueueActivity">
-    <!--
-        tools:context=".TakeQueueActivity" (trỏ về GỐC)
-        đã khớp với cấu trúc dự án của bạn (ảnh image_8f205d.png)
-    -->
 
-    <!-- Thanh Toolbar (Thanh công cụ) trên cùng -->
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarTakeQueue"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:title="Lấy số thứ tự"
-        app:titleTextColor="@android:color/white"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:navigationIconTint="@android:color/white"/>
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <!-- Nội dung chính của màn hình -->
+    <!-- Nội dung chính (Không thay đổi) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,10 +30,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
 
-        <!--
-            Spinner (Dropdown) để chọn dịch vụ.
-            (File Java sẽ đổ data giả vào đây)
-        -->
         <Spinner
             android:id="@+id/spinnerServices"
             android:layout_width="match_parent"
@@ -52,7 +37,6 @@
             android:background="@android:drawable/btn_dropdown"
             android:padding="8dp"/>
 
-        <!-- Hiển thị thông tin (ví dụ: số đang chờ) -->
         <TextView
             android:id="@+id/tvQueueInfo"
             android:layout_width="match_parent"
@@ -63,16 +47,11 @@
             android:gravity="center"
             android:minLines="2"/>
 
-        <!--
-            Một View (Khung nhìn) "vô hình" để đẩy nút bấm xuống dưới cùng
-            (layout_weight="1")
-        -->
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <!-- Nút xác nhận lấy số -->
         <Button
             android:id="@+id/btnConfirmTakeQueue"
             android:layout_width="match_parent"
@@ -83,4 +62,3 @@
 
     </LinearLayout>
 </LinearLayout>
-
