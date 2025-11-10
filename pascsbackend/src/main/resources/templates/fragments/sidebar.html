@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="sidebar">
+    <aside class="d-flex flex-column p-3 text-white" style="width:240px; background: linear-gradient(180deg,#0d6efd,#0b5ed7); min-height:100vh;">
+      <div class="mb-4">
+        <div class="fs-5 fw-bold">Cán bộ - PASCS</div>
+        <div class="small text-white-50">Quản lý hồ sơ & hàng đợi</div>
+      </div>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item mb-1"><a th:href="@{/staff/dashboard}" class="nav-link text-white"> <i class="fa fa-tachometer-alt me-2"></i> Dashboard</a></li>
+        <li class="nav-item mb-1"><a th:href="@{/staff/queue}" class="nav-link text-white"> <i class="fa fa-list-ol me-2"></i> Hàng đợi</a></li>
+        <li class="nav-item mb-1"><a th:href="@{/staff/applications}" class="nav-link text-white"> <i class="fa fa-folder-open me-2"></i> Hồ sơ</a></li>
+        <li class="nav-item mb-1"><a th:href="@{/feedback/form}" class="nav-link text-white"> <i class="fa fa-comment-alt me-2"></i> Phản hồi</a></li>
+        <li class="nav-item mt-3"><a th:href="@{/admin/dashboard}" class="nav-link text-white"> <i class="fa fa-cog me-2"></i> Admin (Chuyển)</a></li>
+      </ul>
+      <div class="mt-auto small text-white-50">
+        <div>Phiên bản: <b>1.0</b></div>
+        <div class="mt-2">© 2025 PASCS</div>
+      </div>
+    </aside>
+  </div>
+</html>

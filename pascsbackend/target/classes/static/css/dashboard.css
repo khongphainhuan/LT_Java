@@ -1,0 +1,23 @@
+/* dashboard.css */
+.dashboard-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.08);
+  transition: transform 0.2s ease-in-out;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+}
+
+.dashboard-card h2 {
+  font-size: 2rem;
+}
+
+.dashboard-table th {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.dashboard-table tbody tr:hover {
+  background-color: #e9f2ff;
+}

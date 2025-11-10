@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="header">
+  <header class="d-flex align-items-center justify-content-between px-4 py-2 bg-white shadow-sm sticky-top">
+    <!-- Logo & Tên hệ thống -->
+    <div class="d-flex align-items-center gap-3">
+      <a th:href="@{/}">
+        <img th:src="@{/images/logo.png}" alt="PASCS" style="height:48px; border-radius:8px;">
+      </a>
+      <div class="d-flex flex-column">
+        <span class="fw-bold text-primary fs-5">PASCS</span>
+        <small class="text-muted">Public Administrative Service — Commune / Ward</small>
+      </div>
+    </div>
+
+    <!-- Người dùng & menu -->
+    <div class="d-flex align-items-center gap-3">
+      <div class="d-none d-md-block text-muted small">
+        Vai trò: <span class="fw-semibold" th:text="${user.role}">Cán bộ</span>
+      </div>
+      <div class="dropdown">
+        <a class="d-flex align-items-center btn btn-sm btn-outline-primary rounded-pill dropdown-toggle" href="#" role="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-person-circle fs-5 me-2"></i>
+          <span th:text="${user.fullName}">Cán bộ A</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3">
+          <li><a class="dropdown-item d-flex align-items-center gap-2" th:href="@{/staff/profile}"><i class="bi bi-person-lines-fill"></i> Hồ sơ cá nhân</a></li>
+          <li><a class="dropdown-item d-flex align-items-center gap-2" th:href="@{/}"><i class="bi bi-house-door-fill"></i> Trang chủ</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger d-flex align-items-center gap-2" th:href="@{/logout}"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+</div>
+</html>
