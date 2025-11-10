@@ -15,4 +15,9 @@ public class FeedbackRequest {
     private Integer rating;
 
     private String comment;
+
+    // Explicit getters for compilation
+    public Long getServiceId() { return serviceId; }
+    public Integer getRating() { return rating; }
+    public String getComment() { return comment; }
 }

@@ -26,12 +26,12 @@ public class Queue {
     @Enumerated(EnumType.STRING)
     private QueueStatus status = QueueStatus.WAITING;
 
+    private boolean priority = false;
     private Integer estimatedWaitTime;
-
-    @ManyToOne
-    @JoinColumn(name = "counter_id")
-    private Counter counter;
-
+    private Long counterId;
+    private Long assignedStaffId;
+    private String note;
+    private String contactPreference;
     private LocalDateTime checkInTime;
     private LocalDateTime calledTime;
     private LocalDateTime completedTime;
@@ -47,18 +47,14 @@ public class Queue {
             this.ticketNumber = "T" + System.currentTimeMillis();
         }
     }
-}
 
-@Entity
-@Table(name = "counters")
-@Data
-class Counter {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private String name;
-
-    private boolean active = true;
+    @PreUpdate
+    public void preUpdate() {
+        if (this.status == QueueStatus.CALLED && this.calledTime == null) {
+            this.calledTime = LocalDateTime.now();
+        }
+        if (this.status == QueueStatus.COMPLETED && this.completedTime == null) {
+            this.completedTime = LocalDateTime.now();
+        }
+    }
 }

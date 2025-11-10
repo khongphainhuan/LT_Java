@@ -1,12 +1,11 @@
 package com.pascs.controller;
 
 import com.pascs.model.Application;
-import com.pascs.model.User;
 import com.pascs.payload.request.ApplicationRequest;
+import com.pascs.payload.request.AssignApplicationRequest;
 import com.pascs.payload.request.UpdateApplicationRequest;
-import com.pascs.repository.ApplicationRepository;
-import com.pascs.repository.ServiceRepository;
-import com.pascs.repository.UserRepository;
+import com.pascs.payload.response.MessageResponse;
+import com.pascs.service.ApplicationWorkflowService;
 import com.pascs.service.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +17,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import com.pascs.exception.ResourceNotFoundException;
-import com.pascs.payload.response.MessageResponse;
-import com.pascs.model.Service;
-import java.time.LocalDateTime;
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/applications")
 public class ApplicationController {
 
     @Autowired
-    private ApplicationRepository applicationRepository;
+    private com.pascs.repository.ApplicationRepository applicationRepository;
 
     @Autowired
-    private ServiceRepository serviceRepository;
+    private com.pascs.repository.ServiceRepository serviceRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private com.pascs.repository.UserRepository userRepository;
+
+    @Autowired
+    private ApplicationWorkflowService applicationWorkflowService;
 
     // Công dân gửi hồ sơ
     @PostMapping("")
@@ -44,24 +41,124 @@ public class ApplicationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        User user = userRepository.findById(userDetails.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetails.getId()));
+        try {
+            com.pascs.model.User user = userRepository.findById(userDetails.getId())
+                    .orElseThrow(() -> new com.pascs.exception.ResourceNotFoundException("User", "id", userDetails.getId()));
 
-        Service service = serviceRepository.findById(applicationRequest.getServiceId())
-                .orElseThrow(() -> new ResourceNotFoundException("Service", "id", applicationRequest.getServiceId()));
+            com.pascs.model.Service service = serviceRepository.findById(applicationRequest.getServiceId())
+                    .orElseThrow(() -> new com.pascs.exception.ResourceNotFoundException("Service", "id", applicationRequest.getServiceId()));
 
-        Application application = new Application();
-        application.setUser(user);
-        application.setService(service);
-        application.setDescription(applicationRequest.getDescription());
-        application.setDocuments(applicationRequest.getDocuments());
-        application.setStatus(Application.ApplicationStatus.PENDING);
+            Application application = new Application();
+            application.setUser(user);
+            application.setService(service);
+            application.setDescription(applicationRequest.getDescription());
+            application.setDocuments(applicationRequest.getDocuments());
+            application.setStatus(Application.ApplicationStatus.PENDING);
 
-        applicationRepository.save(application);
-        return ResponseEntity.ok(new MessageResponse("Application submitted successfully!"));
+            applicationRepository.save(application);
+            return ResponseEntity.ok(new MessageResponse("Application submitted successfully!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
     }
 
-    // Công dân xem hồ sơ của mình
+    // Phân công hồ sơ với đầy đủ thông tin
+    @PutMapping("/{id}/assign")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> assignApplication(@PathVariable Long id, 
+                                             @Valid @RequestBody AssignApplicationRequest assignRequest) {
+        try {
+            Application application = applicationWorkflowService.assignApplication(
+                id, 
+                assignRequest.getStaffId(),
+                assignRequest.getAssignmentNote(),
+                assignRequest.getPriorityLevel(),
+                assignRequest.getEstimatedProcessingTime()
+            );
+            return ResponseEntity.ok(application);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    // Phân công hồ sơ đơn giản (tương thích ngược)
+    @PutMapping("/{id}/assign/{staffId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> assignApplication(@PathVariable Long id, @PathVariable Long staffId) {
+        try {
+            Application application = applicationWorkflowService.assignApplication(id, staffId);
+            return ResponseEntity.ok(application);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    // Yêu cầu bổ sung tài liệu
+    @PostMapping("/{id}/request-documents")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> requestAdditionalDocuments(@PathVariable Long id, @RequestBody String documentRequest) {
+        try {
+            Application application = applicationWorkflowService.requestAdditionalDocuments(id, documentRequest);
+            return ResponseEntity.ok(application);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    // Cập nhật trạng thái hồ sơ
+    @PutMapping("/{id}/status")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> updateApplicationStatus(@PathVariable Long id,
+                                                  @Valid @RequestBody UpdateApplicationRequest updateRequest) {
+        try {
+            Application application = applicationWorkflowService.updateApplicationStatus(
+                id, 
+                updateRequest.getStatus(), 
+                updateRequest.getNote()
+            );
+            return ResponseEntity.ok(application);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    // Thống kê workload
+    @GetMapping("/staff/{staffId}/workload")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getStaffWorkload(@PathVariable Long staffId) {
+        try {
+            ApplicationWorkflowService.WorkloadStats stats = applicationWorkflowService.getStaffWorkload(staffId);
+            return ResponseEntity.ok(stats);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    // Lấy hồ sơ đang hoạt động của staff
+    @GetMapping("/staff/{staffId}/active")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> getActiveApplicationsByStaff(@PathVariable Long staffId) {
+        try {
+            List<Application> applications = applicationWorkflowService.getActiveApplicationsByStaff(staffId);
+            return ResponseEntity.ok(applications);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    // Thống kê hồ sơ mới hôm nay
+    @GetMapping("/stats/new-today")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getNewApplicationsToday() {
+        try {
+            long count = applicationWorkflowService.getNewApplicationsToday();
+            return ResponseEntity.ok(new MessageResponse("New applications today: " + count));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    // Các method cũ giữ nguyên
     @GetMapping("/my-applications")
     @PreAuthorize("hasRole('CITIZEN')")
     public ResponseEntity<List<Application>> getMyApplications() {
@@ -72,7 +169,6 @@ public class ApplicationController {
         return ResponseEntity.ok(applications);
     }
 
-    // Cán bộ xem hồ sơ được phân công
     @GetMapping("/assigned")
     @PreAuthorize("hasRole('STAFF')")
     public ResponseEntity<List<Application>> getAssignedApplications() {
@@ -83,28 +179,6 @@ public class ApplicationController {
         return ResponseEntity.ok(applications);
     }
 
-    // Cập nhật trạng thái hồ sơ
-    @PutMapping("/{id}/status")
-    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateApplicationStatus(@PathVariable Long id,
-                                                   @Valid @RequestBody UpdateApplicationRequest updateRequest) {
-        Application application = applicationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Application", "id", id));
-
-        application.setStatus(updateRequest.getStatus());
-        application.setNote(updateRequest.getNote());
-
-        if (updateRequest.getStatus() == Application.ApplicationStatus.PROCESSING) {
-            application.setProcessedAt(LocalDateTime.now());
-        } else if (updateRequest.getStatus() == Application.ApplicationStatus.COMPLETED) {
-            application.setCompletedAt(LocalDateTime.now());
-        }
-
-        applicationRepository.save(application);
-        return ResponseEntity.ok(new MessageResponse("Application status updated successfully!"));
-    }
-
-    // Admin/Cán bộ xem tất cả hồ sơ
     @GetMapping("")
     @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
     public ResponseEntity<List<Application>> getAllApplications() {

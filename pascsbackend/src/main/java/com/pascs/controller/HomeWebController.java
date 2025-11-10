@@ -11,6 +11,7 @@ public class HomeWebController {
         // Trang chủ chuyển hướng đến trang đăng nhập
         return "redirect:/login";
     }
+    
 
     @GetMapping("/login")
     public String loginPage() {

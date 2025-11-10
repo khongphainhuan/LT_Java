@@ -20,4 +20,12 @@ public class ServiceRequest {
     private String requiredDocuments;
     private Integer processingTime;
     private Double fee;
+
+    // Explicit getters
+    public String getCode() { return code; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public String getRequiredDocuments() { return requiredDocuments; }
+    public Integer getProcessingTime() { return processingTime; }
+    public Double getFee() { return fee; }
 }

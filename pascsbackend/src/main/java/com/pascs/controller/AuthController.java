@@ -18,12 +18,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -35,29 +34,41 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
     // Đăng nhập : /api/auth/signin
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(), 
-                        loginRequest.getPassword()));
+        try {
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        User.UserRole role = User.UserRole.valueOf(
-            userDetails.getAuthorities().iterator().next().getAuthority().replace("ROLE_", "")
-        );
+            // FIX: Sửa lỗi lấy role
+            String roleString = userDetails.getAuthorities().iterator().next().getAuthority();
+            User.UserRole role;
+            if (roleString.startsWith("ROLE_")) {
+                role = User.UserRole.valueOf(roleString.substring(5));
+            } else {
+                role = User.UserRole.valueOf(roleString);
+            }
 
-        return ResponseEntity.ok(new JwtResponse(
-                jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                role));
+            return ResponseEntity.ok(new JwtResponse(
+                    jwt,
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    role));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: Invalid username or password"));
+        }
     }
+
     // Đăng ký : /api/auth/signup
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
@@ -80,9 +91,20 @@ public class AuthController {
         user.setPhoneNumber(signUpRequest.getPhoneNumber());
         user.setAddress(signUpRequest.getAddress());
         user.setRole(User.UserRole.CITIZEN); // Default role for new registrations
-
+        
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    // Kiểm tra token
+    @GetMapping("/check")
+    public ResponseEntity<?> checkAuth() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && 
+            !authentication.getPrincipal().equals("anonymousUser")) {
+            return ResponseEntity.ok(new MessageResponse("Authenticated"));
+        }
+        return ResponseEntity.status(401).body(new MessageResponse("Not authenticated"));
     }
 }

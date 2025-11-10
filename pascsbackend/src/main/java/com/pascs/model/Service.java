@@ -22,9 +22,7 @@ public class Service {
     private String description;
 
     private String requiredDocuments;
-
     private Integer processingTime; // Số ngày xử lý
-
     private Double fee;
 
     @Enumerated(EnumType.STRING)

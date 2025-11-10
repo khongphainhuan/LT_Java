@@ -1,11 +1,10 @@
 package com.pascs.controller;
 
 import com.pascs.model.Queue;
-import com.pascs.model.User;
 import com.pascs.payload.request.QueueRequest;
-import com.pascs.repository.QueueRepository;
-import com.pascs.repository.ServiceRepository;
-import com.pascs.repository.UserRepository;
+import com.pascs.payload.response.MessageResponse;
+import com.pascs.payload.response.QueueStatsResponse;
+import com.pascs.service.QueueService;
 import com.pascs.service.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import com.pascs.exception.ResourceNotFoundException;
-import com.pascs.payload.response.MessageResponse;
-import com.pascs.model.Service;
-import java.time.LocalDateTime;
-
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -28,70 +22,130 @@ import java.util.List;
 public class QueueController {
 
     @Autowired
-    private QueueRepository queueRepository;
+    private com.pascs.repository.QueueRepository queueRepository;
 
     @Autowired
-    private ServiceRepository serviceRepository;
+    private com.pascs.repository.ServiceRepository serviceRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private com.pascs.repository.UserRepository userRepository;
 
-    // Lấy số thứ tự
+    @Autowired
+    private QueueService queueService;
+
     @PostMapping("/take-number")
     @PreAuthorize("hasRole('CITIZEN')")
     public ResponseEntity<?> takeQueueNumber(@Valid @RequestBody QueueRequest queueRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        User user = userRepository.findById(userDetails.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userDetails.getId()));
-
-        Service service = serviceRepository.findById(queueRequest.getServiceId())
-                .orElseThrow(() -> new ResourceNotFoundException("Service", "id", queueRequest.getServiceId()));
-
-        Queue queue = new Queue();
-        queue.setUser(user);
-        queue.setService(service);
-        queue.setStatus(Queue.QueueStatus.WAITING);
-
-        queueRepository.save(queue);
-        return ResponseEntity.ok(new MessageResponse("Queue number taken: " + queue.getTicketNumber()));
+        try {
+            Queue queue = queueService.takeQueueNumber(userDetails.getId(), queueRequest);
+            return ResponseEntity.ok(new MessageResponse("Queue number taken: " + queue.getTicketNumber()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
     }
 
-    // Lấy danh sách hàng chờ hiện tại
+    @PostMapping("/take-number-simple")
+    @PreAuthorize("hasRole('CITIZEN')")
+    public ResponseEntity<?> takeQueueNumberSimple(@RequestParam Long serviceId, 
+                                                 @RequestParam(defaultValue = "false") boolean priority) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        try {
+            Queue queue = queueService.takeQueueNumber(userDetails.getId(), serviceId, priority);
+            return ResponseEntity.ok(new MessageResponse("Queue number taken: " + queue.getTicketNumber()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    @PostMapping("/call-next")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> callNextNumber(@RequestParam Long counterId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        try {
+            Queue nextQueue = queueService.callNextNumber(counterId, userDetails.getId());
+            return ResponseEntity.ok(nextQueue);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
     @GetMapping("/current")
     public ResponseEntity<List<Queue>> getCurrentQueue() {
-        List<Queue> queues = queueRepository.findByStatusOrderByCheckInTimeAsc(Queue.QueueStatus.WAITING);
+        List<Queue> queues = queueService.getCurrentQueue();
         return ResponseEntity.ok(queues);
     }
 
-    // Gọi số tiếp theo
-    @PostMapping("/call-next")
-    @PreAuthorize("hasRole('STAFF')")
-    public ResponseEntity<?> callNextNumber(@RequestParam Long counterId) {
-        List<Queue> waitingQueues = queueRepository.findByStatusOrderByCheckInTimeAsc(Queue.QueueStatus.WAITING);
-        
-        if (waitingQueues.isEmpty()) {
-            return ResponseEntity.badRequest().body(new MessageResponse("No waiting customers"));
-        }
-
-        Queue nextQueue = waitingQueues.get(0);
-        nextQueue.setStatus(Queue.QueueStatus.CALLED);
-        nextQueue.setCalledTime(LocalDateTime.now());
-        // Gán counter nếu cần
-
-        queueRepository.save(nextQueue);
-        return ResponseEntity.ok(nextQueue);
+    @GetMapping("/stats")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<QueueStatsResponse> getQueueStatistics() {
+        QueueService.QueueStats stats = queueService.getQueueStatistics();
+        QueueStatsResponse response = new QueueStatsResponse(
+            stats.getTotalWaiting(),
+            stats.getTotalProcessing(),
+            stats.getTotalCompletedToday(),
+            stats.getAverageWaitTime()
+        );
+        return ResponseEntity.ok(response);
     }
 
-    // Công dân xem số thứ tự của mình
+    @PostMapping("/{queueId}/complete")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> completeQueue(@PathVariable Long queueId) {
+        try {
+            Queue completedQueue = queueService.completeQueue(queueId);
+            return ResponseEntity.ok(completedQueue);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    @PostMapping("/{queueId}/cancel")
+    @PreAuthorize("hasRole('CITIZEN') or hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> cancelQueue(@PathVariable Long queueId) {
+        try {
+            Queue cancelledQueue = queueService.cancelQueue(queueId);
+            return ResponseEntity.ok(cancelledQueue);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/counter/{counterId}")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> getQueueByCounter(@PathVariable Long counterId) {
+        try {
+            List<Queue> queues = queueService.getQueueByCounter(counterId);
+            return ResponseEntity.ok(queues);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
     @GetMapping("/my-queue")
     @PreAuthorize("hasRole('CITIZEN')")
     public ResponseEntity<List<Queue>> getMyQueue() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        List<Queue> queues = queueRepository.findByUserId(userDetails.getId());
+        List<Queue> queues = queueService.getUserQueue(userDetails.getId());
         return ResponseEntity.ok(queues);
+    }
+
+    @GetMapping("/{queueId}")
+    public ResponseEntity<?> getQueueById(@PathVariable Long queueId) {
+        try {
+            Queue queue = queueRepository.findById(queueId)
+                    .orElseThrow(() -> new com.pascs.exception.ResourceNotFoundException("Queue", "id", queueId));
+            return ResponseEntity.ok(queue);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
     }
 }

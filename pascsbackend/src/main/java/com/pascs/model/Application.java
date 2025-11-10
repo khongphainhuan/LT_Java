@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Table(name = "applications")
 @Data
 public class Application {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,10 +36,16 @@ public class Application {
     @JoinColumn(name = "assigned_staff_id")
     private User assignedStaff;
 
+    // CÁC FIELD MỚI - DŨNG THÊM
+    private Integer processingStep = 1;
+    private String currentStepName = "Tiếp nhận hồ sơ";
+    private Boolean urgent = false;
+    private String contactInfo;
+    private String specialRequirements;
+
     private LocalDateTime submittedAt;
     private LocalDateTime processedAt;
     private LocalDateTime completedAt;
-
     private String note;
 
     public enum ApplicationStatus {
@@ -48,9 +55,18 @@ public class Application {
     @PrePersist
     public void prePersist() {
         this.submittedAt = LocalDateTime.now();
-        // Tự động generate application code
         if (this.applicationCode == null) {
             this.applicationCode = "APP" + System.currentTimeMillis();
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        if (this.status == ApplicationStatus.PROCESSING && this.processedAt == null) {
+            this.processedAt = LocalDateTime.now();
+        }
+        if (this.status == ApplicationStatus.COMPLETED && this.completedAt == null) {
+            this.completedAt = LocalDateTime.now();
         }
     }
 }

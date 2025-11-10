@@ -1,94 +1,219 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard - Cán bộ</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    body { font-family: 'Inter', sans-serif; background-color: #f5f8ff; }
-    .card { border: none; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cán bộ | PASCS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f8ff;
+        }
+        .dashboard-card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.08);
+            transition: transform 0.2s ease-in-out;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+        }
+        .dashboard-card h2 {
+            font-size: 2rem;
+        }
+        .dashboard-table th {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+        .dashboard-table tbody tr:hover {
+            background-color: #e9f2ff;
+        }
+        .realtime-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="d-flex">
-    <!-- Sidebar -->
-    <div th:replace="fragments/sidebar :: *"></div>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div th:replace="../fragments/sidebar :: sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="flex-grow-1 d-flex flex-column">
+            <!-- Header -->
+            <div th:replace="../fragments/header :: header"></div>
+            
+            <main class="p-4">
+                <h4 class="mb-4 fw-bold text-primary">
+                    <i class="fas fa-tachometer-alt me-2"></i> Tổng quan công việc
+                    <span id="realtime-indicator" class="badge bg-success ms-2" style="display: none;">
+                        <i class="fas fa-circle"></i> Real-time
+                    </span>
+                </h4>
 
-    <!-- Main Content -->
-    <div class="flex-grow-1 d-flex flex-column">
-      <!-- Header -->
-      <div th:replace="fragments/header :: *"></div>
+                <!-- Stats Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3 position-relative">
+                        <div class="card dashboard-card p-3 text-center bg-warning bg-opacity-10">
+                            <span id="processing-badge" class="realtime-badge">!</span>
+                            <h6 class="text-muted mb-2">Hồ sơ đang xử lý</h6>
+                            <h2 class="text-warning fw-bold" id="processing-count">0</h2>
+                            <small class="text-muted">Hôm nay</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 position-relative">
+                        <div class="card dashboard-card p-3 text-center bg-info bg-opacity-10">
+                            <span id="queue-badge" class="realtime-badge">!</span>
+                            <h6 class="text-muted mb-2">Người đang chờ</h6>
+                            <h2 class="text-info fw-bold" id="queue-count">0</h2>
+                            <small class="text-muted">Tại quầy</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card dashboard-card p-3 text-center bg-success bg-opacity-10">
+                            <h6 class="text-muted mb-2">Đã hoàn tất</h6>
+                            <h2 class="text-success fw-bold" id="completed-count">0</h2>
+                            <small class="text-muted">Hôm nay</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card dashboard-card p-3 text-center bg-primary bg-opacity-10">
+                            <h6 class="text-muted mb-2">Phản hồi mới</h6>
+                            <h2 class="text-primary fw-bold" id="feedback-count">0</h2>
+                            <small class="text-muted">24 giờ</small>
+                        </div>
+                    </div>
+                </div>
 
-      <main class="p-4">
-        <h4 class="mb-4 fw-bold text-primary">Tổng quan công việc</h4>
+                <!-- Real-time Queue Section -->
+                <div class="card dashboard-card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="fas fa-users me-2"></i> Hàng đợi công dân hôm nay
+                                <small class="ms-2 opacity-75" id="last-update"></small>
+                            </h5>
+                            <div>
+                                <button class="btn btn-sm btn-light me-2" onclick="refreshQueue()">
+                                    <i class="fas fa-sync-alt me-1"></i> Làm mới
+                                </button>
+                                <a href="queue.html" class="btn btn-sm btn-success">
+                                    <i class="fas fa-bullhorn me-1"></i> Quản lý hàng đợi
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="queue-container">
+                            <table class="table table-striped align-middle dashboard-table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Số thứ tự</th>
+                                        <th>Tên công dân</th>
+                                        <th>Dịch vụ</th>
+                                        <th>Thời gian chờ</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="queue-tbody">
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-4">
+                                            <i class="fas fa-users fa-2x mb-2 opacity-25"></i>
+                                            <p>Không có người đang chờ</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="row g-3">
-          <div class="col-md-4">
-            <div class="card p-3 text-center">
-              <h6 class="text-muted">Hồ sơ đang xử lý</h6>
-              <h2 class="text-warning fw-bold" th:text="${stats.processing}">0</h2>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card p-3 text-center">
-              <h6 class="text-muted">Đã hoàn tất</h6>
-              <h2 class="text-success fw-bold" th:text="${stats.completed}">0</h2>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card p-3 text-center">
-              <h6 class="text-muted">Phản hồi mới</h6>
-              <h2 class="text-info fw-bold" th:text="${stats.feedbacks}">0</h2>
-            </div>
-          </div>
+                <!-- Recent Applications -->
+                <div class="card dashboard-card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-folder me-2"></i> Hồ sơ gần đây
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover align-middle dashboard-table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Mã hồ sơ</th>
+                                    <th>Công dân</th>
+                                    <th>Dịch vụ</th>
+                                    <th>Ngày nộp</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applications-tbody">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        <i class="fas fa-folder-open fa-2x mb-2 opacity-25"></i>
+                                        <p>Không có hồ sơ nào</p>
+                                        <a href="applications.html" class="btn btn-sm btn-outline-primary mt-2">
+                                            <i class="fas fa-eye me-1"></i> Xem tất cả hồ sơ
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Footer -->
+            <div th:replace="../fragments/footer :: footer"></div>
         </div>
-
-        <div class="mt-5">
-          <h5 class="fw-semibold mb-3">Hàng đợi công dân hôm nay</h5>
-          <table class="table table-striped align-middle shadow-sm">
-            <thead class="table-primary">
-              <tr>
-                <th>#</th>
-                <th>Tên công dân</th>
-                <th>Dịch vụ</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="queue, iterStat : ${todayQueues}">
-                <td th:text="${iterStat.index + 1}"></td>
-                <td th:text="${queue.citizenName}"></td>
-                <td th:text="${queue.serviceName}"></td>
-                <td>
-                  <span class="badge"
-                        th:classappend="${queue.status == 'completed'} ? ' bg-success' :
-                                        ${queue.status == 'processing'} ? ' bg-warning text-dark' :
-                                        ${queue.status == 'needs_supplement'} ? ' bg-danger' : ''"
-                        th:text="${queue.statusDisplay}">
-                  </span>
-                </td>
-                <td>
-                  <button th:if="${queue.status == 'processing'}"
-                          class="btn btn-success btn-sm">
-                    <i class="bi bi-telephone-forward"></i> Gọi tiếp
-                  </button>
-                  <a th:href="@{/staff/application-detail/{id}(id=${queue.id})}" 
-                     class="btn btn-outline-primary btn-sm">
-                    <i class="bi" th:classappend="${queue.status == 'processing'} ? ' bi-pencil-square' : ' bi-eye'"></i>
-                    <span th:text="${queue.status == 'processing'} ? ' Cập nhật' : ' Xem'"></span>
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </main>
-
-      <!-- Footer -->
-      <div th:replace="fragments/footer :: *"></div>
     </div>
-  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Set last update time
+            document.getElementById('last-update').textContent = new Date().toLocaleTimeString('vi-VN');
+            
+            // Load initial data
+            loadDashboardData();
+        });
+
+        async function loadDashboardData() {
+            // Simulate loading data
+            document.getElementById('processing-count').textContent = '5';
+            document.getElementById('queue-count').textContent = '8';
+            document.getElementById('completed-count').textContent = '12';
+            document.getElementById('feedback-count').textContent = '3';
+        }
+
+        function refreshQueue() {
+            location.reload();
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '../login.html';
+        }
+    </script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.pascs.repository;
 
 import com.pascs.model.Service;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,4 +13,7 @@ public interface ServiceRepository extends JpaRepository<Service, Long> {
     Optional<Service> findByCode(String code);
     List<Service> findByStatus(Service.ServiceStatus status);
     boolean existsByCode(String code);
-}
+    
+    @Query("SELECT COUNT(s) FROM Service s WHERE s.status = ?1")
+    long countByStatus(Service.ServiceStatus status);
+}   
