@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">PASCS Citizen</string>
+
+    <!-- MainActivity -->
+    <string name="welcome">Hello, Citizen!</string>
+    <string name="welcome_user">Hello, %s</string>
+    <string name="take_queue">Take Queue Number</string>
+    <string name="take_queue_desc">Take queue number online</string>
+    <string name="queue_status">View Queue Status</string>
+    <string name="queue_status_desc">Track queue number and waiting time</string>
+    <string name="book_appointment">Book Appointment</string>
+    <string name="book_appointment_desc">Schedule meeting with staff</string>
+    <string name="track_application">Track Application</string>
+    <string name="track_application_desc">Check application processing status</string>
+    <string name="feedback">Send Feedback</string>
+    <string name="feedback_desc">Submit feedback and rate service</string>
+
+    <!-- Common -->
+    <string name="logout">Logout</string>
+    <string name="logout_success">Logout successful</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="loading">Loading...</string>
+    <string name="processing">Processing...</string>
+
+    <!-- Language -->
+    <string name="change_language">Change Language</string>
+    <string name="select_language">Select Language</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_english">English</string>
+    <string name="language_changed">Language changed</string>
+</resources>

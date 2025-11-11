@@ -1,120 +1,149 @@
-package com.pascs.citizen.activities; // (Đảm bảo package (gói) khớp (match) 100%)
+package com.pascs.citizen.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import com.pascs.citizen.LoginActivity;
 import com.pascs.citizen.R;
 import com.pascs.citizen.TakeQueueActivity;
+import com.pascs.citizen.QueueStatusActivity;
+import com.pascs.citizen.BookAppointmentActivity;
+import com.pascs.citizen.ApplicationListActivity;
+import com.pascs.citizen.FeedbackActivity;
 import com.pascs.citizen.models.User;
 import com.pascs.citizen.utils.SharedPrefManager;
+import com.pascs.citizen.utils.LanguageManager;
 
-// (Lỗi "cannot find symbol MainActivity" (không tìm thấy biểu tượng MainActivity) sẽ 100% biến mất sau khi file (tệp) này được "Build" (Xây dựng) thành công)
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvWelcome;
-    private MaterialCardView cardTakeQueue, cardQueueStatus, cardBookAppointment, cardTrackApplication, cardFeedback;
+    private TextView tvWelcome, btnLanguage;
+    private MaterialCardView cardTakeQueue, cardQueueStatus, cardBookAppointment,
+            cardTrackApplication, cardFeedback;
     private FloatingActionButton fabLogout;
+
+    private LanguageManager languageManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // Load ngôn ngữ (Language) đã lưu TRƯỚC khi setContentView
+        languageManager = new LanguageManager(this);
+        languageManager.loadSavedLanguage();
 
-        // (File (Tệp) này sẽ CẦN file (tệp) 'activity_main.xml' (Bố cục Hoạt động chính) (sử dụng CardViews (Khung nhìn Thẻ)))
-        // (Nếu bạn chưa có file (tệp) XML (XML) đó, nó sẽ báo lỗi ở dòng 'setContentView' (đặt khung nhìn nội dung))
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // (Kiểm tra (Check) xem User (Người dùng) có "nên" (should) ở đây không,
-        //  hay họ "vô tình" (accidentally) mở (open) màn hình này mà chưa login (đăng nhập)?)
-        /*if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
-            // Chưa login (đăng nhập) → "Đá" (Kick) họ về LoginActivity (Hoạt động Đăng nhập)
-            handleLogout(); // (Hàm (Function) Logout (Đăng xuất) (của bạn) cũng làm việc này)
-            return;
-        }*/
-
+        // Khởi tạo (Init) Views
         tvWelcome = findViewById(R.id.tvWelcome);
+        btnLanguage = findViewById(R.id.btnLanguage);
         cardTakeQueue = findViewById(R.id.cardTakeQueue);
         cardQueueStatus = findViewById(R.id.cardQueueStatus);
         cardBookAppointment = findViewById(R.id.cardBookAppointment);
         cardTrackApplication = findViewById(R.id.cardTrackApplication);
         cardFeedback = findViewById(R.id.cardFeedback);
         fabLogout = findViewById(R.id.fabLogout);
-        // Gán sự kiện cho nút Đăng xuất
-        fabLogout.setOnClickListener(v -> handleLogout());
 
-        // === ĐÃ SỬA LỖI (FIXED) (Sửa lỗi "Không Khớp" (Mismatch) (getUserName (lấy tên người dùng))) ===
-        // Lấy (Get) đối tượng (Object) User (Người dùng) (từ SharedPrefManager (Trình quản lý SharedPref))
-        User user = SharedPrefManager.getInstance(this).getUser();
-        String userName = (user != null) ? user.getFullName() : null; // Lấy (Get) fullName (Họ và Tên)
+        // Set welcome text
+        updateWelcomeText();
 
-        if (userName != null && !userName.isEmpty()) {
-            tvWelcome.setText("Xin chào, " + userName);
-        } else {
-            // (Thêm dòng "dự phòng" (fallback) phòng khi tên (name) bị "null" (rỗng))
-            tvWelcome.setText("Xin chào, Công dân!");
-        }
-        // ===================================
+        // === GÁN CÁC BUTTON CLICKS ===
 
-        // Gán (Set) Click (Nhấn) Listeners (Trình nghe)
+        // Language button
+        btnLanguage.setOnClickListener(v -> showLanguageDialog());
+
+        // 1. Lấy số thứ tự
         cardTakeQueue.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, TakeQueueActivity.class);
             startActivity(intent);
         });
 
+        // 2. Xem trạng thái hàng chờ
         cardQueueStatus.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this,
-                    com.pascs.citizen.QueueStatusActivity.class);
+            Intent intent = new Intent(MainActivity.this, QueueStatusActivity.class);
             startActivity(intent);
         });
 
+        // 3. Đặt lịch hẹn
         cardBookAppointment.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this,
-                    com.pascs.citizen.BookAppointmentActivity.class);
+            Intent intent = new Intent(MainActivity.this, BookAppointmentActivity.class);
             startActivity(intent);
         });
 
+        // 4. Theo dõi hồ sơ
         cardTrackApplication.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this,
-                    com.pascs.citizen.ApplicationListActivity.class);
+            Intent intent = new Intent(MainActivity.this, ApplicationListActivity.class);
             startActivity(intent);
         });
 
+        // 5. Gửi góp ý
         cardFeedback.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this,
-                    com.pascs.citizen.FeedbackActivity.class);
+            Intent intent = new Intent(MainActivity.this, FeedbackActivity.class);
             startActivity(intent);
         });
 
+        // Logout button
         fabLogout.setOnClickListener(v -> handleLogout());
     }
 
-    // Hàm xử lý đăng xuất
+    private void updateWelcomeText() {
+        User user = SharedPrefManager.getInstance(this).getUser();
+        String userName = (user != null) ? user.getFullName() : null;
+
+        if (userName != null && !userName.isEmpty()) {
+            tvWelcome.setText(getString(R.string.welcome_user, userName));
+        } else {
+            tvWelcome.setText(getString(R.string.welcome));
+        }
+    }
+
+    private void showLanguageDialog() {
+        String[] languages = {
+                getString(R.string.language_vietnamese),
+                getString(R.string.language_english)
+        };
+
+        // Check ngôn ngữ (Language) hiện tại (Current)
+        int currentSelection = languageManager.isVietnamese() ? 0 : 1;
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.select_language))
+                .setSingleChoiceItems(languages, currentSelection, (dialog, which) -> {
+                    String languageCode;
+                    if (which == 0) {
+                        languageCode = LanguageManager.getVietnameseCode();
+                    } else {
+                        languageCode = LanguageManager.getEnglishCode();
+                    }
+
+                    // Lưu (Save) và áp dụng (Apply) ngôn ngữ (Language)
+                    languageManager.setLanguage(languageCode);
+
+                    // Hiển thị (Show) thông báo (Notification)
+                    Toast.makeText(this,
+                            getString(R.string.language_changed),
+                            Toast.LENGTH_SHORT).show();
+
+                    dialog.dismiss();
+
+                    // Restart activity để áp dụng (Apply) ngôn ngữ (Language)
+                    recreate();
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
+    }
+
     private void handleLogout() {
-
-        // (QUAN TRỌNG NHẤT) Xóa toàn bộ thông tin đã lưu
-        // (Bao gồm token và thông tin user)
         SharedPrefManager.getInstance(this).logout();
-
-        // Hiển thị thông báo
-        Toast.makeText(this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
-
-        // Mở lại màn hình Login
+        Toast.makeText(this, getString(R.string.logout_success), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LoginActivity.class);
-
-        // (Quan trọng) Các "cờ" (flags) này sẽ xóa hết các màn hình cũ
-        // và đảm bảo người dùng không thể nhấn "Back" để quay lại
-        // MainActivity sau khi đã đăng xuất.
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
         startActivity(intent);
-
-        // Đóng màn hình MainActivity lại
         finish();
     }
 }

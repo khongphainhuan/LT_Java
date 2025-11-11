@@ -1,3 +1,33 @@
 <resources>
-    <string name="app_name">PASCS_Citizen_App</string>
+    <string name="app_name">PASCS Công Dân</string>
+
+    <!-- MainActivity -->
+    <string name="welcome">Xin chào, Công dân!</string>
+    <string name="welcome_user">Xin chào, %s</string>
+    <string name="take_queue">Lấy số thứ tự</string>
+    <string name="take_queue_desc">Lấy số thứ tự xếp hàng trực tuyến</string>
+    <string name="queue_status">Xem trạng thái hàng chờ</string>
+    <string name="queue_status_desc">Theo dõi số thứ tự và thời gian chờ</string>
+    <string name="book_appointment">Đặt lịch hẹn</string>
+    <string name="book_appointment_desc">Đặt lịch làm việc với cán bộ</string>
+    <string name="track_application">Theo dõi hồ sơ</string>
+    <string name="track_application_desc">Tra cứu tình trạng xử lý hồ sơ</string>
+    <string name="feedback">Gửi góp ý</string>
+    <string name="feedback_desc">Gửi phản hồi, đánh giá dịch vụ</string>
+
+    <!-- Common -->
+    <string name="logout">Đăng xuất</string>
+    <string name="logout_success">Đăng xuất thành công</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="cancel">Hủy</string>
+    <string name="back">Quay lại</string>
+    <string name="loading">Đang tải...</string>
+    <string name="processing">Đang xử lý...</string>
+
+    <!-- Language -->
+    <string name="change_language">Đổi ngôn ngữ</string>
+    <string name="select_language">Chọn ngôn ngữ</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_english">English</string>
+    <string name="language_changed">Đã đổi ngôn ngữ</string>
 </resources>
