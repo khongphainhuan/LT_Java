@@ -18,3 +18,4 @@ public class ApplicationWebController {
         return "staff/application-detail";
     }
 }
+
