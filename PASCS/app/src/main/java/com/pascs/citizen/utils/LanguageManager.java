@@ -32,6 +32,18 @@ public class LanguageManager {
         return prefs.getString(KEY_LANGUAGE, LANGUAGE_VIETNAMESE); // Mặc định (Default) Tiếng Việt
     }
 
+    // TRẢ VỀ Context mới đã được cập nhật ngôn ngữ
+    public Context updateContext(Context context) {
+        String language = getLanguage();
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+
+        Configuration configuration = new Configuration(context.getResources().getConfiguration());
+        configuration.setLocale(locale);
+
+        return context.createConfigurationContext(configuration);
+    }
+
     // Áp dụng (Apply) ngôn ngữ (Language)
     public void updateResources(String languageCode) {
         Locale locale = new Locale(languageCode);

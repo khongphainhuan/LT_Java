@@ -5,11 +5,11 @@
     import android.widget.Button;
     import android.widget.TextView;
     import android.widget.Toast;
-    import androidx.appcompat.app.AppCompatActivity;
     import com.google.android.material.textfield.TextInputEditText;
 
     // === ĐÃ SỬA LỖI GỐC 2 (FIXED ROOT ERROR 2) ===
     // (Xóa (Removed) '.activities' (tệp '.activities') - vì 'MainActivity' (Hoạt động chính) nằm CÙNG package (gói) 'com.pascs.citizen')
+    import com.pascs.citizen.activities.BaseActivity;
     import com.pascs.citizen.activities.MainActivity;
     // ===================================
 
@@ -23,7 +23,7 @@
     import retrofit2.Callback;
     import retrofit2.Response;
 
-    public class LoginActivity extends AppCompatActivity {
+    public class LoginActivity extends BaseActivity {
 
         private TextInputEditText etUsername;
         private TextInputEditText etPassword;

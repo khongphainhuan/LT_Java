@@ -3,12 +3,12 @@ package com.pascs.citizen; // (Gói GỐC)
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.pascs.citizen.activities.BaseActivity;
 import com.pascs.citizen.models.Application;
 
-public class ApplicationDetailActivity extends AppCompatActivity {
+public class ApplicationDetailActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private TextView tvApplicationId, tvServiceType, tvStatus, tvSubmitDate, tvCompletedDate, tvNotes;

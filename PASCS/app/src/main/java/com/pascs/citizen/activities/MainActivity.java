@@ -21,21 +21,15 @@ import com.pascs.citizen.models.User;
 import com.pascs.citizen.utils.SharedPrefManager;
 import com.pascs.citizen.utils.LanguageManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private TextView tvWelcome, btnLanguage;
     private MaterialCardView cardTakeQueue, cardQueueStatus, cardBookAppointment,
             cardTrackApplication, cardFeedback;
     private FloatingActionButton fabLogout;
 
-    private LanguageManager languageManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Load ngôn ngữ (Language) đã lưu TRƯỚC khi setContentView
-        languageManager = new LanguageManager(this);
-        languageManager.loadSavedLanguage();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -103,13 +97,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showLanguageDialog() {
+        // Tạo (Create) LanguageManager mới
+        LanguageManager langManager = new LanguageManager(this);
+
         String[] languages = {
                 getString(R.string.language_vietnamese),
                 getString(R.string.language_english)
         };
 
         // Check ngôn ngữ (Language) hiện tại (Current)
-        int currentSelection = languageManager.isVietnamese() ? 0 : 1;
+        int currentSelection = langManager.isVietnamese() ? 0 : 1;
 
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_language))
@@ -122,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // Lưu (Save) và áp dụng (Apply) ngôn ngữ (Language)
-                    languageManager.setLanguage(languageCode);
+                    langManager.setLanguage(languageCode);
 
                     // Hiển thị (Show) thông báo (Notification)
                     Toast.makeText(this,

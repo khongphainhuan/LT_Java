@@ -7,12 +7,12 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.pascs.citizen.activities.BaseActivity;
 import com.pascs.citizen.models.FeedbackRequest;
 
-public class FeedbackActivity extends AppCompatActivity {
+public class FeedbackActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private RatingBar ratingBar;

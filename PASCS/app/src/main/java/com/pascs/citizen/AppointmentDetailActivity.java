@@ -6,12 +6,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.pascs.citizen.activities.BaseActivity;
 import com.pascs.citizen.models.Appointment;
 
-public class AppointmentDetailActivity extends AppCompatActivity {
+public class AppointmentDetailActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private TextView tvAppointmentId, tvServiceType, tvDate, tvTime, tvStatus, tvNotes;

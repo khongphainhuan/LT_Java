@@ -5,18 +5,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pascs.citizen.activities.BaseActivity;
 import com.pascs.citizen.adapters.ApplicationAdapter;
 import com.pascs.citizen.models.Application;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApplicationListActivity extends AppCompatActivity {
+public class ApplicationListActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;

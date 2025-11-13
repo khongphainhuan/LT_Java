@@ -5,13 +5,13 @@ import android.os.Handler;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.ProgressBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import com.pascs.citizen.activities.BaseActivity;
 import com.pascs.citizen.models.QueueTicket;
 
-public class QueueStatusActivity extends AppCompatActivity {
+public class QueueStatusActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private TextView tvTicketNumber, tvServiceName, tvStatus, tvPeopleAhead, tvEstimatedTime;

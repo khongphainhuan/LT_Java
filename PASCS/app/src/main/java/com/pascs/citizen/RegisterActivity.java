@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
+import com.pascs.citizen.activities.BaseActivity;
 
 // (TODO: Bạn sẽ cần import các model và ApiService khi kết nối backend)
 // import com.pascs.citizen.api.ApiConfig;
@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 // import retrofit2.Callback;
 // import retrofit2.Response;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private TextInputEditText etRegisterUsername;
     private TextInputEditText etRegisterPassword;

@@ -15,6 +15,83 @@
     <string name="feedback">Send Feedback</string>
     <string name="feedback_desc">Submit feedback and rate service</string>
 
+    <!-- TakeQueueActivity -->
+    <string name="title_take_queue">Take Queue Number</string>
+    <string name="select_service">Select service</string>
+    <string name="queue_info">Currently waiting: %d people</string>
+    <string name="confirm_take_queue">Confirm Take Queue</string>
+    <string name="service_cccd">Citizen ID Card Service</string>
+    <string name="service_driving_license">Driving License Registration</string>
+    <string name="service_residence">Residence Registration</string>
+
+    <!-- QueueStatusActivity -->
+    <string name="title_queue_status">Queue Status</string>
+    <string name="ticket_number">Ticket Number: %s</string>
+    <string name="queue_info_title">Queue Information</string>
+    <string name="people_ahead">People ahead:</string>
+    <string name="estimated_time">Estimated time:</string>
+    <string name="status_waiting">Waiting</string>
+    <string name="status_called">Called</string>
+    <string name="status_serving">Serving</string>
+    <string name="status_completed">Completed</string>
+
+    <!-- BookAppointmentActivity -->
+    <string name="title_book_appointment">Book Appointment</string>
+    <string name="book_with_staff">Book appointment with staff</string>
+    <string name="select_date">Select appointment date</string>
+    <string name="select_time">Select time (8:00 AM - 5:00 PM)</string>
+    <string name="not_selected">Not selected</string>
+    <string name="reason_optional">Reason (optional)</string>
+    <string name="reason_hint">E.g.: Consultation about ID card registration...</string>
+    <string name="confirm_appointment">Confirm Appointment</string>
+    <string name="select_date_prompt">Please select appointment date</string>
+    <string name="select_time_prompt">Please select appointment time</string>
+    <string name="working_hours_only">Please select working hours (8:00 AM - 5:00 PM)</string>
+
+    <!-- ApplicationListActivity -->
+    <string name="title_track_application">Track Application</string>
+    <string name="no_applications">You have no applications</string>
+    <string name="status_submitted">Submitted</string>
+    <string name="status_processing">Processing</string>
+    <string name="status_need_supplement">Need Supplement</string>
+    <string name="submit_date">Submit date: %s</string>
+
+    <!-- ApplicationDetailActivity -->
+    <string name="title_application_detail">Application Detail</string>
+    <string name="service_type">Service type:</string>
+    <string name="status">Status:</string>
+    <string name="notes">Notes:</string>
+
+    <!-- AppointmentListActivity -->
+    <string name="title_appointment_list">My Appointments</string>
+    <string name="no_appointments">You have no appointments</string>
+    <string name="appointment_confirmed">Confirmed</string>
+    <string name="appointment_pending">Pending</string>
+    <string name="appointment_cancelled">Cancelled</string>
+
+    <!-- AppointmentDetailActivity -->
+    <string name="title_appointment_detail">Appointment Detail</string>
+    <string name="appointment_date">Appointment date:</string>
+    <string name="appointment_time">Appointment time:</string>
+    <string name="cancel_appointment">Cancel Appointment</string>
+    <string name="cancel_appointment_confirm">Are you sure you want to cancel this appointment?</string>
+    <string name="appointment_cancelled_success">Appointment cancelled!</string>
+
+    <!-- FeedbackActivity -->
+    <string name="title_feedback">Send Feedback</string>
+    <string name="rate_service">How would you rate our service?</string>
+    <string name="not_rated">Not rated</string>
+    <string name="rating_very_bad">😞 Very Dissatisfied</string>
+    <string name="rating_bad">😐 Dissatisfied</string>
+    <string name="rating_normal">😊 Normal</string>
+    <string name="rating_good">😃 Satisfied</string>
+    <string name="rating_excellent">🤩 Very Satisfied</string>
+    <string name="your_feedback">Your Feedback</string>
+    <string name="feedback_hint">Share your experience about our service...</string>
+    <string name="submit_feedback">Submit Feedback</string>
+    <string name="select_rating">Please select star rating</string>
+    <string name="enter_comment">Please enter your feedback</string>
+
     <!-- Common -->
     <string name="logout">Logout</string>
     <string name="logout_success">Logout successful</string>
@@ -23,6 +100,8 @@
     <string name="back">Back</string>
     <string name="loading">Loading...</string>
     <string name="processing">Processing...</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!-- Language -->
     <string name="change_language">Change Language</string>
@@ -30,4 +109,10 @@
     <string name="language_vietnamese">Tiếng Việt</string>
     <string name="language_english">English</string>
     <string name="language_changed">Language changed</string>
+
+    <!-- Test messages -->
+    <string name="test_queue_request">Queue request sent for: %s</string>
+    <string name="test_queue_success">Queue number taken successfully!</string>
+    <string name="test_appointment_success">Appointment booked successfully!\nDate: %1$s\nTime: %2$s</string>
+    <string name="test_feedback_success">Feedback submitted successfully!\nRating: %d stars\nThank you for your feedback!</string>
 </resources>

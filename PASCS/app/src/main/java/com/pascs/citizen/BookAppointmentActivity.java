@@ -9,15 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.pascs.citizen.activities.BaseActivity;
 import com.pascs.citizen.activities.MainActivity;
 // import com.pascs.citizen.models.Appointment; // (Sẽ dùng khi có API)
 
 import java.util.Calendar;
 
-public class BookAppointmentActivity extends AppCompatActivity {
+public class BookAppointmentActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private TextView tvSelectedDate, tvSelectedTime;

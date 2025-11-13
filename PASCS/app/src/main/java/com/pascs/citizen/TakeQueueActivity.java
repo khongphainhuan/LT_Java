@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar; // (Quan trọng cho Toolbar)
 
 // (Các file models và api bạn sẽ cần khi có backend)
@@ -19,13 +18,14 @@ import androidx.appcompat.widget.Toolbar; // (Quan trọng cho Toolbar)
 // import com.pascs.citizen.models.QueueTicketResponse;
 
 // (Import các file từ package GỐC - RẤT QUAN TRỌNG)
+import com.pascs.citizen.activities.BaseActivity;
 import com.pascs.citizen.activities.MainActivity; // (Vì Main của bạn nằm trong 'activities')
 // import com.pascs.citizen.utils.SharedPrefManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TakeQueueActivity extends AppCompatActivity {
+public class TakeQueueActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private Spinner spinnerServices;
