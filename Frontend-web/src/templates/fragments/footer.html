@@ -1,0 +1,41 @@
+<!-- Footer Fragment -->
+<footer th:fragment="footer" class="footer mt-auto py-3 bg-light">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <span class="text-muted">
+                    &copy; 2024 Hệ thống Quản lý Xếp hàng. 
+                    <span th:text="${#authentication.principal.username}">User</span>
+                </span>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <span class="text-muted">
+                    Phiên bản 1.0 | 
+                    <span id="currentTime" th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy HH:mm')}">
+                        <!-- Time will be updated by JavaScript -->
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+// Update current time every minute
+function updateCurrentTime() {
+    const now = new Date();
+    const timeString = now.toLocaleDateString('vi-VN') + ' ' + 
+                      now.toLocaleTimeString('vi-VN', { 
+                          hour: '2-digit', 
+                          minute: '2-digit' 
+                      });
+    const timeElement = document.getElementById('currentTime');
+    if (timeElement) {
+        timeElement.textContent = timeString;
+    }
+}
+
+// Update time immediately and set interval
+updateCurrentTime();
+setInterval(updateCurrentTime, 60000);
+</script>
