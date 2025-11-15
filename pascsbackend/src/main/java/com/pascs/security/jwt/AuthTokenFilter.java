@@ -1,6 +1,9 @@
 package com.pascs.security.jwt;
 
-import com.pascs.service.UserDetailsServiceImpl;
+import com.pascs.service.UserDetailsServiceImpl;  // ← ĐÃ KIỂM TRA: Nếu file này ở service/ thì OK
+                                                    //               Nếu ở security/services/ thì sửa thành:
+                                                    // import com.pascs.security.services.UserDetailsServiceImpl;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

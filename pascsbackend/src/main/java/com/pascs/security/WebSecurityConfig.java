@@ -1,7 +1,7 @@
 package com.pascs.security;
 
 import com.pascs.security.jwt.AuthTokenFilter;
-import com.pascs.service.UserDetailsServiceImpl;
+import com.pascs.service.UserDetailsServiceImpl;  // ← KIỂM TRA package này
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,18 +56,25 @@ public class WebSecurityConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> 
-                auth.requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/api/test/**").permitAll()
-                    .requestMatchers("/swagger-ui/**").permitAll()
-                    .requestMatchers("/api-docs/**").permitAll()
-                    .requestMatchers("/v3/api-docs/**").permitAll()
+            .authorizeHttpRequests(auth ->
+                auth
+                    .requestMatchers(
+                        "/api/auth/**",
+                        "/api/test/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/api-docs/**",
+                        "/swagger-resources/**",
+                        "/v3/api-docs.yaml",
+                        "/actuator/**"
+                    ).permitAll()
                     .anyRequest().authenticated()
             );
-        
+
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-        
+
         return http.build();
     }
 

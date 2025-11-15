@@ -2,6 +2,8 @@ package com.pascs.exception;
 
 import com.pascs.payload.response.ApiResponse;
 import com.pascs.payload.response.MessageResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -94,16 +97,29 @@ public class GlobalExceptionHandler {
             .body(new MessageResponse("Error: Invalid username or password"));
     }
     
-    /**
-     * Xử lý tất cả các exception khác
-     */
+    /** Xử lý NoResourceFoundException (cho Actuator, Swagger, static resources) */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleNotFound(NoResourceFoundException ex) {
+        ApiResponse<Object> response = ApiResponse.error("Endpoint not found");
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    /** Xử lý tất cả lỗi khác */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Object>> handleGlobalException(Exception ex) {
-        log.error("Unexpected error: ", ex);
-        
-        ApiResponse<Object> response = ApiResponse.error(
-            "An unexpected error occurred: " + ex.getMessage()
-        );
+    public ResponseEntity<ApiResponse<Object>> handleGlobalException(
+            Exception ex,
+            HttpServletRequest request
+    ) {
+
+        // ❗ KHÔNG xử lý lỗi cho Actuator
+        if (request.getRequestURI().startsWith("/actuator")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            // hoặc: return null; (đều OK, miễn không trả JSON)
+        }
+
+        ApiResponse<Object> response =
+                ApiResponse.error("An unexpected error occurred: " + ex.getMessage());
+
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
