@@ -23,6 +23,14 @@
     <string name="service_cccd">Cấp Căn cước công dân</string>
     <string name="service_driving_license">Đăng ký Giấy phép lái xe</string>
     <string name="service_residence">Đăng ký tạm trú, tạm vắng</string>
+    <string name="error_heading">Lỗi</string>
+    <string name="load_services_failed">Không thể tải danh sách dịch vụ</string>
+    <string name="load_error">Lỗi tải dữ liệu</string>
+    <string name="connection_error">Lỗi kết nối: %s</string>
+    <string name="please_select_service">Vui lòng chọn một dịch vụ</string>
+    <string name="auth_error">Lỗi xác thực, vui lòng đăng nhập lại</string>
+    <string name="take_queue_failed">Lấy số thất bại: %s</string>
+    <string name="take_queue_success_with_number">Lấy số thành công! Số của bạn là: %s</string>
 
     <!-- QueueStatusActivity -->
     <string name="title_queue_status">Theo dõi hàng chờ</string>
@@ -34,6 +42,7 @@
     <string name="status_called">Đã gọi số</string>
     <string name="status_serving">Đang phục vụ</string>
     <string name="status_completed">Hoàn thành</string>
+    <string name="queue_instructions">• Vui lòng đến quầy khi số của bạn được gọi\n• Bạn sẽ nhận thông báo khi đến lượt\n• Màn hình này tự động cập nhật</string>
 
     <!-- BookAppointmentActivity -->
     <string name="title_book_appointment">Đặt lịch hẹn</string>
@@ -47,6 +56,7 @@
     <string name="select_date_prompt">Vui lòng chọn ngày hẹn</string>
     <string name="select_time_prompt">Vui lòng chọn giờ hẹn</string>
     <string name="working_hours_only">Vui lòng chọn giờ làm việc (8:00 - 17:00)</string>
+    <string name="appointment_instructions">• Đặt lịch trước ít nhất 1 ngày\n• Giờ làm việc: 8:00 - 17:00 (Thứ 2 - Thứ 6)\n• Vui lòng đến đúng giờ đã đặt\n• Bạn sẽ nhận thông báo xác nhận qua app</string>
 
     <!-- ApplicationListActivity -->
     <string name="title_track_application">Theo dõi hồ sơ</string>
@@ -91,6 +101,7 @@
     <string name="submit_feedback">Gửi góp ý</string>
     <string name="select_rating">Vui lòng chọn số sao đánh giá</string>
     <string name="enter_comment">Vui lòng nhập góp ý của bạn</string>
+    <string name="feedback_note">Góp ý của bạn giúp chúng tôi cải thiện chất lượng dịch vụ. Xin cảm ơn!</string>
 
     <!-- Common -->
     <string name="logout">Đăng xuất</string>

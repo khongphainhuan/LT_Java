@@ -43,7 +43,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Đặt lịch hẹn với cán bộ"
+                        android:text="@string/book_with_staff"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
@@ -52,7 +52,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chọn thời gian phù hợp để gặp cán bộ"
+                        android:text="@string/book_appointment_desc"
                         android:textSize="14sp"
                         android:textColor="@android:color/darker_gray"
                         android:layout_marginBottom="16dp"/>
@@ -61,7 +61,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chọn ngày hẹn"
+                        android:text="@string/select_date"
                         android:textSize="14sp"
                         android:textColor="@android:color/darker_gray"
                         android:layout_marginBottom="8dp"/>
@@ -77,7 +77,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Chưa chọn"
+                            android:text="@string/not_selected"
                             android:textSize="16sp"
                             android:textColor="@android:color/darker_gray"
                             android:padding="12dp"
@@ -88,7 +88,7 @@
                             android:id="@+id/btnSelectDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="📅 Chọn"
+                            android:text="📅"
                             android:textSize="14sp"/>
 
                     </LinearLayout>
@@ -97,7 +97,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chọn giờ hẹn (8:00 - 17:00)"
+                        android:text="@string/select_time"
                         android:textSize="14sp"
                         android:textColor="@android:color/darker_gray"
                         android:layout_marginBottom="8dp"/>
@@ -113,7 +113,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Chưa chọn"
+                            android:text="@string/not_selected"
                             android:textSize="16sp"
                             android:textColor="@android:color/darker_gray"
                             android:padding="12dp"
@@ -124,7 +124,7 @@
                             android:id="@+id/btnSelectTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🕐 Chọn"
+                            android:text="🕐"
                             android:textSize="14sp"/>
 
                     </LinearLayout>
@@ -133,7 +133,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lý do hẹn (không bắt buộc)"
+                        android:text="@string/reason_optional"
                         android:textSize="14sp"
                         android:textColor="@android:color/darker_gray"
                         android:layout_marginBottom="8dp"/>
@@ -142,7 +142,7 @@
                         android:id="@+id/etNotes"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:hint="Ví dụ: Tư vấn về thủ tục đăng ký CCCD..."
+                        android:hint="@string/reason_hint"
                         android:gravity="top|start"
                         android:padding="12dp"
                         android:background="@drawable/bg_input"
@@ -171,7 +171,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="💡 Lưu ý khi đặt lịch"
+                        android:text="💡"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
@@ -180,7 +180,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="• Đặt lịch trước ít nhất 1 ngày\n• Giờ làm việc: 8:00 - 17:00 (Thứ 2 - Thứ 6)\n• Vui lòng đến đúng giờ đã đặt\n• Bạn sẽ nhận thông báo xác nhận qua app"
+                        android:text="@string/appointment_instructions"
                         android:textSize="14sp"
                         android:textColor="@android:color/white"
                         android:lineSpacingExtra="4dp"/>
@@ -194,7 +194,7 @@
                 android:id="@+id/btnConfirmAppointment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Xác nhận đặt lịch"
+                android:text="@string/confirm_appointment"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginTop="24dp"

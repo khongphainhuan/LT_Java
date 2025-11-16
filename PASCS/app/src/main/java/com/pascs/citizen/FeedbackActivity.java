@@ -1,4 +1,4 @@
-package com.pascs.citizen; // (Gói GỐC)
+package com.pascs.citizen;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.pascs.citizen.activities.BaseActivity;
 import com.pascs.citizen.models.FeedbackRequest;
+import com.pascs.citizen.R;
 
 public class FeedbackActivity extends BaseActivity {
 
@@ -25,31 +26,31 @@ public class FeedbackActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
 
-        // Khởi tạo (Init) Views
+        // Khởi tạo Views
         toolbar = findViewById(R.id.toolbarFeedback);
         ratingBar = findViewById(R.id.ratingBar);
         tvRatingText = findViewById(R.id.tvRatingText);
         etComment = findViewById(R.id.etComment);
         btnSubmitFeedback = findViewById(R.id.btnSubmitFeedback);
 
-        // --- Cài đặt (Setup) Toolbar ---
+        // --- Cài đặt Toolbar ---
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Gửi góp ý");
+            // ✅ SỬA: Dùng getString()
+            getSupportActionBar().setTitle(getString(R.string.title_feedback));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        // --- Xử lý (Handle) RatingBar ---
+        // --- Xử lý RatingBar ---
         ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             updateRatingText((int) rating);
         });
 
-        // --- Xử lý (Handle) Button ---
+        // --- Xử lý Button ---
         btnSubmitFeedback.setOnClickListener(v -> handleSubmitFeedback());
     }
 
-    // (Hàm này để xử lý khi nhấn nút Back trên Toolbar)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -60,24 +61,25 @@ public class FeedbackActivity extends BaseActivity {
     }
 
     private void updateRatingText(int rating) {
+        // ✅ SỬA: Dùng getString()
         switch (rating) {
             case 1:
-                tvRatingText.setText("😞 Rất không hài lòng");
+                tvRatingText.setText(getString(R.string.rating_very_bad));
                 break;
             case 2:
-                tvRatingText.setText("😐 Không hài lòng");
+                tvRatingText.setText(getString(R.string.rating_bad));
                 break;
             case 3:
-                tvRatingText.setText("😊 Bình thường");
+                tvRatingText.setText(getString(R.string.rating_normal));
                 break;
             case 4:
-                tvRatingText.setText("😃 Hài lòng");
+                tvRatingText.setText(getString(R.string.rating_good));
                 break;
             case 5:
-                tvRatingText.setText("🤩 Rất hài lòng");
+                tvRatingText.setText(getString(R.string.rating_excellent));
                 break;
             default:
-                tvRatingText.setText("Chưa đánh giá");
+                tvRatingText.setText(getString(R.string.not_rated));
                 break;
         }
     }
@@ -86,37 +88,34 @@ public class FeedbackActivity extends BaseActivity {
         float rating = ratingBar.getRating();
         String comment = etComment.getText().toString().trim();
 
-        // Kiểm tra (Validation)
+        // Kiểm tra Validation
         if (rating == 0) {
-            Toast.makeText(this, "Vui lòng chọn số sao đánh giá", Toast.LENGTH_SHORT).show();
+            // ✅ SỬA: Dùng getString()
+            Toast.makeText(this, getString(R.string.select_rating), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (comment.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập góp ý của bạn", Toast.LENGTH_SHORT).show();
+            // ✅ SỬA: Dùng getString()
+            Toast.makeText(this, getString(R.string.enter_comment), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Mock: Tạo (Create) feedback request
+        // Mock: Tạo feedback request
         FeedbackRequest feedback = new FeedbackRequest(1, (int) rating, comment);
 
-        // (Hiện tại, chúng ta chỉ hiển thị thông báo TEST)
         btnSubmitFeedback.setEnabled(false);
-        btnSubmitFeedback.setText("Đang gửi...");
+        // ✅ SỬA: Tạo string mới cho "Đang gửi..."
+        btnSubmitFeedback.setText(getString(R.string.processing));
 
-        Toast.makeText(this,
-                "[TEST] Đang gửi góp ý...",
-                Toast.LENGTH_SHORT).show();
-
-        // Giả lập (Simulate) API call
+        // Giả lập API call
         new android.os.Handler().postDelayed(() -> {
+            // ✅ SỬA: Dùng String.format
             Toast.makeText(this,
-                    "[TEST] Gửi góp ý thành công!\n" +
-                            "Đánh giá: " + (int) rating + " sao\n" +
-                            "Cảm ơn bạn đã đóng góp ý kiến!",
+                    String.format(getString(R.string.test_feedback_success), (int) rating),
                     Toast.LENGTH_LONG).show();
 
-            finish(); // Đóng màn hình này
+            finish();
         }, 1500);
     }
 }

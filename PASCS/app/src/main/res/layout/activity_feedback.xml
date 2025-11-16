@@ -44,7 +44,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bạn đánh giá dịch vụ như thế nào?"
+                        android:text="@string/rate_service"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
@@ -65,7 +65,7 @@
                         android:id="@+id/tvRatingText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chưa đánh giá"
+                        android:text="@string/not_rated"
                         android:textSize="16sp"
                         android:textColor="@android:color/darker_gray"/>
 
@@ -90,7 +90,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Góp ý của bạn"
+                        android:text="@string/your_feedback"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
@@ -100,7 +100,7 @@
                         android:id="@+id/etComment"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:hint="Chia sẻ trải nghiệm của bạn về dịch vụ..."
+                        android:hint="@string/feedback_hint"
                         android:gravity="top|start"
                         android:padding="12dp"
                         android:background="@drawable/bg_input"
@@ -129,7 +129,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="💡 Lưu ý"
+                        android:text="💡"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
@@ -138,7 +138,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Góp ý của bạn giúp chúng tôi cải thiện chất lượng dịch vụ. Xin cảm ơn!"
+                        android:text="@string/feedback_note"
                         android:textSize="14sp"
                         android:textColor="@android:color/white"
                         android:lineSpacingExtra="4dp"/>
@@ -152,7 +152,7 @@
                 android:id="@+id/btnSubmitFeedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gửi góp ý"
+                android:text="@string/submit_feedback"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:padding="16dp"

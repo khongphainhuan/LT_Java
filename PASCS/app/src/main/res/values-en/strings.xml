@@ -23,6 +23,14 @@
     <string name="service_cccd">Citizen ID Card Service</string>
     <string name="service_driving_license">Driving License Registration</string>
     <string name="service_residence">Residence Registration</string>
+    <string name="error_heading">Error</string>
+    <string name="load_services_failed">Could not load list of services</string>
+    <string name="load_error">Error loading data</string>
+    <string name="connection_error">Connection Error: %s</string>
+    <string name="please_select_service">Please select a service</string>
+    <string name="auth_error">Authentication error. Please log in again.</string>
+    <string name="take_queue_failed">Failed to get ticket: %s</string>
+    <string name="take_queue_success_with_number">Success! Your ticket number is: %s</string>
 
     <!-- QueueStatusActivity -->
     <string name="title_queue_status">Queue Status</string>
@@ -34,6 +42,7 @@
     <string name="status_called">Called</string>
     <string name="status_serving">Serving</string>
     <string name="status_completed">Completed</string>
+    <string name="queue_instructions">• Please come to the counter when your number is called\n• You will receive a notification when it\'s your turn\n• This screen updates automatically</string>
 
     <!-- BookAppointmentActivity -->
     <string name="title_book_appointment">Book Appointment</string>
@@ -47,6 +56,7 @@
     <string name="select_date_prompt">Please select appointment date</string>
     <string name="select_time_prompt">Please select appointment time</string>
     <string name="working_hours_only">Please select working hours (8:00 AM - 5:00 PM)</string>
+    <string name="appointment_instructions">• Book at least 1 day in advance\n• Working hours: 8:00 AM - 5:00 PM (Mon - Fri)\n• Please arrive on time\n• You will receive a confirmation notification via app</string>
 
     <!-- ApplicationListActivity -->
     <string name="title_track_application">Track Application</string>
@@ -91,6 +101,7 @@
     <string name="submit_feedback">Submit Feedback</string>
     <string name="select_rating">Please select star rating</string>
     <string name="enter_comment">Please enter your feedback</string>
+    <string name="feedback_note">Your feedback helps us improve our service quality. Thank you!</string>
 
     <!-- Common -->
     <string name="logout">Logout</string>

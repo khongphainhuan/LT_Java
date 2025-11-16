@@ -60,6 +60,10 @@
             android:name=".FeedbackActivity"
             android:parentActivityName=".activities.MainActivity" />
 
+        <activity
+            android:name=".DebugLanguageActivity"
+            android:label="Debug Ngôn Ngữ" />
+
     </application>
 
 </manifest>

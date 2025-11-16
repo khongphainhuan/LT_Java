@@ -15,7 +15,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <!-- Nội dung chính (Không thay đổi) -->
+    <!-- Nội dung chính -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn dịch vụ cần lấy số:"
+            android:text="@string/select_service"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Đang tải thông tin hàng chờ..."
+            android:text="@string/loading"
             android:textSize="16sp"
             android:gravity="center"
             android:minLines="2"/>
@@ -56,7 +56,7 @@
             android:id="@+id/btnConfirmTakeQueue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Xác nhận lấy số"
+            android:text="@string/confirm_take_queue"
             android:padding="12dp"
             android:layout_marginTop="32dp"/>
 

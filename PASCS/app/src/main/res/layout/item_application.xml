@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardApplication"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -29,7 +30,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="#001"
+                tools:text="#001"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"/>
@@ -38,7 +39,7 @@
                 android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đang xử lý"
+                tools:text="@string/status_processing"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/holo_orange_dark"/>
@@ -50,7 +51,7 @@
             android:id="@+id/tvServiceType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cấp Căn cước công dân"
+            tools:text="@string/service_cccd"
             android:textSize="16sp"
             android:textColor="@android:color/black"
             android:layout_marginBottom="4dp"/>
@@ -60,7 +61,7 @@
             android:id="@+id/tvSubmitDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ngày gửi: 15/10/2024"
+            tools:text="Submit date: 15/10/2024"
             android:textSize="14sp"
             android:textColor="@android:color/darker_gray"/>
 
