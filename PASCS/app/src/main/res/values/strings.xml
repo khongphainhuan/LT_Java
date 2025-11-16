@@ -1,0 +1,129 @@
+<resources>
+    <string name="app_name">PASCS Công Dân</string>
+
+    <!-- MainActivity -->
+    <string name="welcome">Xin chào, Công dân!</string>
+    <string name="welcome_user">Xin chào, %s</string>
+    <string name="take_queue">Lấy số thứ tự</string>
+    <string name="take_queue_desc">Lấy số thứ tự xếp hàng trực tuyến</string>
+    <string name="queue_status">Xem trạng thái hàng chờ</string>
+    <string name="queue_status_desc">Theo dõi số thứ tự và thời gian chờ</string>
+    <string name="book_appointment">Đặt lịch hẹn</string>
+    <string name="book_appointment_desc">Đặt lịch làm việc với cán bộ</string>
+    <string name="track_application">Theo dõi hồ sơ</string>
+    <string name="track_application_desc">Tra cứu tình trạng xử lý hồ sơ</string>
+    <string name="feedback">Gửi góp ý</string>
+    <string name="feedback_desc">Gửi phản hồi, đánh giá dịch vụ</string>
+
+    <!-- TakeQueueActivity -->
+    <string name="title_take_queue">Lấy số thứ tự</string>
+    <string name="select_service">Chọn dịch vụ cần làm</string>
+    <string name="queue_info">Hiện có: %d người đang chờ</string>
+    <string name="confirm_take_queue">Xác nhận lấy số</string>
+    <string name="service_cccd">Cấp Căn cước công dân</string>
+    <string name="service_driving_license">Đăng ký Giấy phép lái xe</string>
+    <string name="service_residence">Đăng ký tạm trú, tạm vắng</string>
+    <string name="error_heading">Lỗi</string>
+    <string name="load_services_failed">Không thể tải danh sách dịch vụ</string>
+    <string name="load_error">Lỗi tải dữ liệu</string>
+    <string name="connection_error">Lỗi kết nối: %s</string>
+    <string name="please_select_service">Vui lòng chọn một dịch vụ</string>
+    <string name="auth_error">Lỗi xác thực, vui lòng đăng nhập lại</string>
+    <string name="take_queue_failed">Lấy số thất bại: %s</string>
+    <string name="take_queue_success_with_number">Lấy số thành công! Số của bạn là: %s</string>
+
+    <!-- QueueStatusActivity -->
+    <string name="title_queue_status">Theo dõi hàng chờ</string>
+    <string name="ticket_number">Số thứ tự: %s</string>
+    <string name="queue_info_title">Thông tin hàng chờ</string>
+    <string name="people_ahead">Số người phía trước:</string>
+    <string name="estimated_time">Thời gian dự kiến:</string>
+    <string name="status_waiting">Đang chờ</string>
+    <string name="status_called">Đã gọi số</string>
+    <string name="status_serving">Đang phục vụ</string>
+    <string name="status_completed">Hoàn thành</string>
+    <string name="queue_instructions">• Vui lòng đến quầy khi số của bạn được gọi\n• Bạn sẽ nhận thông báo khi đến lượt\n• Màn hình này tự động cập nhật</string>
+
+    <!-- BookAppointmentActivity -->
+    <string name="title_book_appointment">Đặt lịch hẹn</string>
+    <string name="book_with_staff">Đặt lịch hẹn với cán bộ</string>
+    <string name="select_date">Chọn ngày hẹn</string>
+    <string name="select_time">Chọn giờ hẹn (8:00 - 17:00)</string>
+    <string name="not_selected">Chưa chọn</string>
+    <string name="reason_optional">Lý do hẹn (không bắt buộc)</string>
+    <string name="reason_hint">Ví dụ: Tư vấn về thủ tục đăng ký CCCD...</string>
+    <string name="confirm_appointment">Xác nhận đặt lịch</string>
+    <string name="select_date_prompt">Vui lòng chọn ngày hẹn</string>
+    <string name="select_time_prompt">Vui lòng chọn giờ hẹn</string>
+    <string name="working_hours_only">Vui lòng chọn giờ làm việc (8:00 - 17:00)</string>
+    <string name="appointment_instructions">• Đặt lịch trước ít nhất 1 ngày\n• Giờ làm việc: 8:00 - 17:00 (Thứ 2 - Thứ 6)\n• Vui lòng đến đúng giờ đã đặt\n• Bạn sẽ nhận thông báo xác nhận qua app</string>
+
+    <!-- ApplicationListActivity -->
+    <string name="title_track_application">Theo dõi hồ sơ</string>
+    <string name="no_applications">Bạn chưa có hồ sơ nào</string>
+    <string name="status_submitted">Đã gửi</string>
+    <string name="status_processing">Đang xử lý</string>
+    <string name="status_need_supplement">Cần bổ sung</string>
+    <string name="submit_date">Ngày gửi: %s</string>
+
+    <!-- ApplicationDetailActivity -->
+    <string name="title_application_detail">Chi tiết hồ sơ</string>
+    <string name="service_type">Loại dịch vụ:</string>
+    <string name="status">Trạng thái:</string>
+    <string name="notes">Ghi chú:</string>
+
+    <!-- AppointmentListActivity -->
+    <string name="title_appointment_list">Lịch hẹn của tôi</string>
+    <string name="no_appointments">Bạn chưa có lịch hẹn nào</string>
+    <string name="appointment_confirmed">Đã xác nhận</string>
+    <string name="appointment_pending">Chờ xác nhận</string>
+    <string name="appointment_cancelled">Đã hủy</string>
+
+    <!-- AppointmentDetailActivity -->
+    <string name="title_appointment_detail">Chi tiết lịch hẹn</string>
+    <string name="appointment_date">Ngày hẹn:</string>
+    <string name="appointment_time">Giờ hẹn:</string>
+    <string name="cancel_appointment">Hủy lịch hẹn</string>
+    <string name="cancel_appointment_confirm">Bạn có chắc muốn hủy lịch hẹn này?</string>
+    <string name="appointment_cancelled_success">Đã hủy lịch hẹn!</string>
+
+    <!-- FeedbackActivity -->
+    <string name="title_feedback">Gửi góp ý</string>
+    <string name="rate_service">Bạn đánh giá dịch vụ như thế nào?</string>
+    <string name="not_rated">Chưa đánh giá</string>
+    <string name="rating_very_bad">😞 Rất không hài lòng</string>
+    <string name="rating_bad">😐 Không hài lòng</string>
+    <string name="rating_normal">😊 Bình thường</string>
+    <string name="rating_good">😃 Hài lòng</string>
+    <string name="rating_excellent">🤩 Rất hài lòng</string>
+    <string name="your_feedback">Góp ý của bạn</string>
+    <string name="feedback_hint">Chia sẻ trải nghiệm của bạn về dịch vụ...</string>
+    <string name="submit_feedback">Gửi góp ý</string>
+    <string name="select_rating">Vui lòng chọn số sao đánh giá</string>
+    <string name="enter_comment">Vui lòng nhập góp ý của bạn</string>
+    <string name="feedback_note">Góp ý của bạn giúp chúng tôi cải thiện chất lượng dịch vụ. Xin cảm ơn!</string>
+
+    <!-- Common -->
+    <string name="logout">Đăng xuất</string>
+    <string name="logout_success">Đăng xuất thành công</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="cancel">Hủy</string>
+    <string name="back">Quay lại</string>
+    <string name="loading">Đang tải...</string>
+    <string name="processing">Đang xử lý...</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+
+    <!-- Language -->
+    <string name="change_language">Đổi ngôn ngữ</string>
+    <string name="select_language">Chọn ngôn ngữ</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_english">English</string>
+    <string name="language_changed">Đã đổi ngôn ngữ</string>
+
+    <!-- Test messages -->
+    <string name="test_queue_request">Đã gửi yêu cầu lấy số cho: %s</string>
+    <string name="test_queue_success">Lấy số thành công!</string>
+    <string name="test_appointment_success">Đặt lịch thành công!\nNgày: %1$s\nGiờ: %2$s</string>
+    <string name="test_feedback_success">Gửi góp ý thành công!\nĐánh giá: %d sao\nCảm ơn bạn đã đóng góp ý kiến!</string>
+</resources>

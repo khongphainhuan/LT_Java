@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TakeQueueActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarTakeQueue"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <!-- Nội dung chính -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_service"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerServices"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/tvQueueInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/loading"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:minLines="2"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btnConfirmTakeQueue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_take_queue"
+            android:padding="12dp"
+            android:layout_marginTop="32dp"/>
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,69 @@
+plugins {
+    id 'com.android.application' // (Đây là cú pháp Groovy)
+}
+
+android {
+    namespace 'com.pascs.citizen'
+    compileSdk 36 // (Sửa lại cú pháp Groovy)
+
+    defaultConfig {
+        applicationId "com.pascs.citizen"
+        minSdk 24
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11 // «« ĐÃ SỬA (KHÔNG CÓ _1_)
+        targetCompatibility = JavaVersion.VERSION_11 // «« ĐÃ SỬA (KHÔNG CÓ _1_)
+    }
+    // ===========================================
+}
+
+dependencies {
+
+    // === CÚ PHÁP GROOVY (Dùng dấu nháy đơn) ===
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.activity:activity:1.8.0'
+
+    // 1. Dùng cho 'com.google.android.material.textfield.TextInputLayout'
+    implementation 'com.google.android.material:material:1.10.0'
+
+    // 2. Dùng cho 'app:layout_constraintTop_to...'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // === THƯ VIỆN API (Đã gõ cứng) ===
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // === THƯ VIỆN GSON (Cần cho Model @SerializedName) ===
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    // === ĐÃ THÊM (SỬA LỖI "package okhttp3.logging does not exist") ===
+    // (BOM - Bill of Materials - để đảm bảo các thư viện OkHttp đồng bộ)
+    implementation platform('com.squareup.okhttp3:okhttp-bom:4.10.0')
+    // (Thư viện OkHttp lõi)
+    implementation 'com.squareup.okhttp3:okhttp'
+    // (Thư viện Logging Interceptor mà ApiConfig.java cần)
+    implementation 'com.squareup.okhttp3:logging-interceptor'
+
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+    implementation 'com.google.android.material:material:1.9.0'
+
+    // === THƯ VIỆN TEST (Giữ nguyên) ===
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+

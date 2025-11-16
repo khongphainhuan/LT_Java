@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarApplicationDetail"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Card thông tin chính -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- ID -->
+                    <TextView
+                        android:id="@+id/tvApplicationId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="#001"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Dịch vụ -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Loại dịch vụ:"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tvServiceType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cấp Căn cước công dân"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Trạng thái -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trạng thái:"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tvStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đang xử lý"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Ngày gửi -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ngày gửi:"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tvSubmitDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15/10/2024"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Ngày hoàn thành -->
+                    <TextView
+                        android:id="@+id/tvCompletedDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card ghi chú -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ghi chú:"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvNotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hồ sơ đang được xử lý..."
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black"
+                        android:lineSpacingExtra="4dp"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
