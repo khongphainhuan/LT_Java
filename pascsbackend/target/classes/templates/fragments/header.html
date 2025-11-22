@@ -24,23 +24,46 @@
           <i class="fas fa-user-circle fs-5 me-2"></i>
           <span id="userName">Cán bộ A</span>
         </a>
-        <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3">
-          <li><a class="dropdown-item d-flex align-items-center gap-2" href="/citizen/profile">
-              <i class="fas fa-user me-2"></i> Hồ sơ cá nhân
+        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 p-2">
+          <li>
+            <div class="px-3 py-2">
+              <div class="fw-bold text-dark" id="menuUserName">User</div>
+              <div class="small text-muted" id="menuUserRole">Role</div>
+            </div>
+          </li>
+          <li>
+            <hr class="dropdown-divider my-2">
+          </li>
+          <li><a class="dropdown-item rounded-3 py-2 mb-1 d-flex align-items-center gap-2" th:href="@{/citizen/profile}"
+              onclick="window.location.href='/citizen/profile'; return false;">
+              <i class="fas fa-user text-primary me-2" style="width: 20px;"></i> Hồ sơ cá nhân
             </a></li>
-          <li><a class="dropdown-item d-flex align-items-center gap-2" href="dashboard.html">
-              <i class="fas fa-home me-2"></i> Trang chủ
+          <li><a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2" href="/citizen/dashboard">
+              <i class="fas fa-home text-primary me-2" style="width: 20px;"></i> Trang chủ
             </a></li>
           <li>
-            <hr class="dropdown-divider">
+            <hr class="dropdown-divider my-2">
           </li>
-          <li><a class="dropdown-item text-danger d-flex align-items-center gap-2" href="#" onclick="logout()">
-              <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+          <li><a class="dropdown-item rounded-3 py-2 text-danger d-flex align-items-center gap-2 bg-soft-danger"
+              href="#" onclick="logout()">
+              <i class="fas fa-sign-out-alt me-2" style="width: 20px;"></i> Đăng xuất
             </a></li>
         </ul>
       </div>
     </div>
   </header>
+
+  <style>
+    .bg-soft-danger {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: #dc3545;
+    }
+
+    .bg-soft-danger:hover {
+      background-color: rgba(220, 53, 69, 0.2);
+      color: #b02a37;
+    }
+  </style>
 
   <script>
     function logout() {
@@ -55,6 +78,12 @@
       if (user.username) {
         document.getElementById('userName').textContent = user.fullName || user.username;
         document.getElementById('userRole').textContent = user.role || 'Cán bộ';
+
+        // Populate menu info
+        const menuName = document.getElementById('menuUserName');
+        const menuRole = document.getElementById('menuUserRole');
+        if (menuName) menuName.textContent = user.fullName || user.username;
+        if (menuRole) menuRole.textContent = user.role || 'Cán bộ';
       }
     });
   </script>
