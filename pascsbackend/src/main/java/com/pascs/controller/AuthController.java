@@ -171,6 +171,32 @@ public class AuthController {
         return ResponseEntity.status(401).body(new MessageResponse("Not authenticated"));
     }
 
+    // Lấy thông tin user hiện tại
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || 
+            authentication.getPrincipal().equals("anonymousUser")) {
+            return ResponseEntity.status(401).body(new MessageResponse("Not authenticated"));
+        }
+
+        String username = authentication.getName();
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            return ResponseEntity.ok(new JwtResponse(
+                null, // No token needed for session auth
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole()
+            ));
+        }
+        
+        return ResponseEntity.badRequest().body(new MessageResponse("User not found"));
+    }
+
     // Kiểm tra health
     @GetMapping("/health")
     public ResponseEntity<?> healthCheck() {

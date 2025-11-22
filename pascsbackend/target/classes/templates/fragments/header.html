@@ -69,21 +69,92 @@
     function logout() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = 'login.html';
+      window.location.href = '/auth/login';
     }
 
     // Load user info
-    document.addEventListener('DOMContentLoaded', function () {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      if (user.username) {
-        document.getElementById('userName').textContent = user.fullName || user.username;
-        document.getElementById('userRole').textContent = user.role || 'Cán bộ';
+    document.addEventListener('DOMContentLoaded', async function () {
+      try {
+        // 1. Try to get user from API (Session based)
+        let user = null;
+        try {
+          const response = await fetch('/api/auth/me');
+          if (response.ok) {
+            user = await response.json();
+            // Update localStorage for backup
+            localStorage.setItem('user', JSON.stringify(user));
+          }
+        } catch (err) {
+          console.warn("Failed to fetch user info from API:", err);
+        }
 
-        // Populate menu info
-        const menuName = document.getElementById('menuUserName');
-        const menuRole = document.getElementById('menuUserRole');
-        if (menuName) menuName.textContent = user.fullName || user.username;
-        if (menuRole) menuRole.textContent = user.role || 'Cán bộ';
+        // 2. Fallback to localStorage if API failed
+        if (!user) {
+          const userStr = localStorage.getItem('user');
+          if (userStr) {
+            user = JSON.parse(userStr);
+          }
+        }
+
+        if (!user || !user.username) return;
+
+        // 3. Update User Name (Display Name)
+        // Note: JwtResponse doesn't have fullName, so we use username or email
+        const displayName = user.fullName || user.username || user.email;
+        const userNameEl = document.getElementById('userName');
+        const menuUserNameEl = document.getElementById('menuUserName');
+
+        if (userNameEl) userNameEl.textContent = displayName;
+        if (menuUserNameEl) menuUserNameEl.textContent = displayName;
+
+        // 4. Update User Role (Display Text)
+        let roleDisplay = 'Người dùng';
+        const role = (user.role || '').toUpperCase();
+
+        if (role.includes('ADMIN')) {
+          roleDisplay = 'Quản trị viên';
+        } else if (role.includes('STAFF')) {
+          roleDisplay = 'Cán bộ';
+        } else if (role.includes('CITIZEN')) {
+          roleDisplay = 'Công dân';
+        }
+
+        const userRoleEl = document.getElementById('userRole');
+        const menuUserRoleEl = document.getElementById('menuUserRole');
+
+        if (userRoleEl) userRoleEl.textContent = roleDisplay;
+        if (menuUserRoleEl) menuUserRoleEl.textContent = roleDisplay;
+
+        // 5. Update Profile & Home Links based on Role
+        const profileLink = document.querySelector('a[href*="profile"]');
+        const homeLink = document.querySelector('a[href*="dashboard"]');
+
+        let newProfileLink = '/citizen/profile';
+        let newHomeLink = '/citizen/dashboard';
+
+        if (role.includes('ADMIN')) {
+          newProfileLink = '/admin/settings';
+          newHomeLink = '/admin/dashboard';
+        } else if (role.includes('STAFF')) {
+          newProfileLink = '/staff/profile';
+          newHomeLink = '/staff/dashboard';
+        }
+
+        // Apply links
+        if (profileLink) {
+          profileLink.setAttribute('href', newProfileLink);
+          profileLink.onclick = function (e) {
+            e.preventDefault();
+            window.location.href = newProfileLink;
+          };
+        }
+
+        if (homeLink) {
+          homeLink.setAttribute('href', newHomeLink);
+        }
+
+      } catch (e) {
+        console.error("Error updating header:", e);
       }
     });
   </script>

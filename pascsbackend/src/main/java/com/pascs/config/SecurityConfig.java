@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 @Configuration
+@EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
@@ -211,9 +213,9 @@ public class SecurityConfig {
             .requestMatchers("/api/**").authenticated()
 
             // Role-based routes
-            .requestMatchers("/citizen/**").hasAnyRole("CITIZEN", "ADMIN")
-            .requestMatchers("/staff/**").hasAnyRole("STAFF", "ADMIN")
-            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .requestMatchers("/citizen/**").hasAnyAuthority("ROLE_CITIZEN", "ROLE_ADMIN")
+            .requestMatchers("/staff/**").hasAnyAuthority("ROLE_STAFF", "ROLE_ADMIN")
+            .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 
             .anyRequest().authenticated()
         )
