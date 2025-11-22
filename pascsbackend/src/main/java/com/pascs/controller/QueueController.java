@@ -95,6 +95,19 @@ public class QueueController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/stats/public")
+    public ResponseEntity<QueueStatsResponse> getPublicQueueStatistics() {
+        // Public endpoint for citizens to view queue statistics
+        QueueService.QueueStats stats = queueService.getQueueStatistics();
+        QueueStatsResponse response = new QueueStatsResponse(
+            stats.getTotalWaiting(),
+            stats.getTotalProcessing(),
+            stats.getTotalCompletedToday(),
+            stats.getAverageWaitTime()
+        );
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/{queueId}/complete")
     @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
     public ResponseEntity<?> completeQueue(@PathVariable Long queueId) {

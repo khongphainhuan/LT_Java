@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,16 +12,19 @@
       font-family: 'Inter', sans-serif;
       background-color: #f5f8ff;
     }
+
     .service-card {
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(13, 110, 253, 0.08);
       transition: all 0.3s ease;
       border: none;
     }
+
     .service-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 25px rgba(13, 110, 253, 0.15);
     }
+
     .calendar-day {
       border: 1px solid #dee2e6;
       padding: 10px;
@@ -28,18 +32,22 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     .calendar-day:hover {
       background-color: #e9ecef;
     }
+
     .calendar-day.selected {
       background-color: #0d6efd;
       color: white;
     }
+
     .calendar-day.disabled {
       background-color: #f8f9fa;
       color: #6c757d;
       cursor: not-allowed;
     }
+
     .time-slot {
       border: 1px solid #dee2e6;
       padding: 8px 12px;
@@ -48,14 +56,17 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     .time-slot:hover {
       background-color: #e9ecef;
     }
+
     .time-slot.selected {
       background-color: #0d6efd;
       color: white;
       border-color: #0d6efd;
     }
+
     .time-slot.disabled {
       background-color: #f8f9fa;
       color: #6c757d;
@@ -63,22 +74,23 @@
     }
   </style>
 </head>
+
 <body>
   <div class="d-flex">
     <!-- Sidebar -->
-    <div th:replace="../fragments/sidebar :: sidebar"></div>
-    
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
     <!-- Main Content -->
     <div class="flex-grow-1 d-flex flex-column">
       <!-- Header -->
-      <div th:replace="../fragments/header :: header"></div>
-      
+      <div th:replace="~{fragments/header :: header}"></div>
+
       <main class="p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h4 class="fw-bold text-primary">
             <i class="fas fa-calendar-check me-2"></i> Đặt lịch hẹn
           </h4>
-          <a href="dashboard.html" class="btn btn-outline-secondary">
+          <a href="/citizen/dashboard" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-2"></i> Quay lại
           </a>
         </div>
@@ -202,9 +214,9 @@
           </div>
         </div>
       </main>
-      
+
       <!-- Footer -->
-      <div th:replace="../fragments/footer :: footer"></div>
+      <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
   </div>
 
@@ -215,30 +227,56 @@
     let selectedTime = null;
     let currentDate = new Date();
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        window.location.href = '../login.html';
-        return;
-      }
-
+    document.addEventListener('DOMContentLoaded', function () {
       initializeCalendar();
       setupEventListeners();
+      loadServices();
     });
 
-    function setupEventListeners() {
-      // Service selection
-      document.querySelectorAll('#services-list .list-group-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-          e.preventDefault();
-          document.querySelectorAll('#services-list .list-group-item').forEach(i => {
-            i.classList.remove('active');
-          });
-          this.classList.add('active');
-          selectedService = this.dataset.service;
-          updateServiceInfo();
+    async function loadServices() {
+      try {
+        const response = await fetch('/api/services', {
+          credentials: 'include'
         });
-      });
+        if (response.ok) {
+          const services = await response.json();
+          displayServices(services);
+        }
+      } catch (error) {
+        console.error('Error loading services:', error);
+      }
+    }
+
+    function displayServices(services) {
+      const container = document.getElementById('services-list');
+      if (services && services.length > 0) {
+        container.innerHTML = services.map(service => `
+          <a href="#" class="list-group-item list-group-item-action" data-service="${service.id}">
+            <i class="fas fa-id-card me-2"></i>
+            <div>
+              <strong>${service.name}</strong>
+              <small class="d-block text-muted">${service.description || 'Dịch vụ hành chính'}</small>
+            </div>
+          </a>
+        `).join('');
+
+        // Setup event listeners for service selection
+        document.querySelectorAll('#services-list .list-group-item').forEach(item => {
+          item.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelectorAll('#services-list .list-group-item').forEach(i => {
+              i.classList.remove('active');
+            });
+            this.classList.add('active');
+            selectedService = this.dataset.service;
+            updateServiceInfo();
+          });
+        });
+      }
+    }
+
+    function setupEventListeners() {
+      // Service selection is handled in displayServices()
 
       // Month navigation
       document.getElementById('prev-month').addEventListener('click', () => {
@@ -263,7 +301,7 @@
 
     function updateMonthHeader() {
       const options = { month: 'long', year: 'numeric' };
-      document.getElementById('current-month').textContent = 
+      document.getElementById('current-month').textContent =
         currentDate.toLocaleDateString('vi-VN', options);
     }
 
@@ -273,17 +311,17 @@
 
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth();
-      
+
       // First day of month
       const firstDay = new Date(year, month, 1);
       // Last day of month
       const lastDay = new Date(year, month + 1, 0);
-      
+
       // Days in previous month
       const prevLastDay = new Date(year, month, 0).getDate();
       // Day of week for first day (0 = Sunday, 1 = Monday, ...)
       const firstDayIndex = firstDay.getDay();
-      
+
       // Days in next month
       const nextDays = 7 - lastDay.getDay() - 1;
 
@@ -301,17 +339,17 @@
         day.className = 'col calendar-day';
         day.textContent = i;
         day.dataset.date = `${year}-${month + 1}-${i}`;
-        
+
         const date = new Date(year, month, i);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        
+
         if (date < today) {
           day.classList.add('disabled');
         } else {
           day.addEventListener('click', () => selectDate(day));
         }
-        
+
         calendarDays.appendChild(day);
       }
 
@@ -362,34 +400,54 @@
       updateAppointmentSummary();
     }
 
-    function updateServiceInfo() {
-      const serviceInfo = document.getElementById('service-info');
-      const services = {
-        'CCCD': { name: 'Cấp đổi CCCD', time: '15-20 phút', docs: 'CMND/CCCD cũ, ảnh 3x4' },
-        'HK': { name: 'Đăng ký hộ khẩu', time: '20-25 phút', docs: 'Sổ hộ khẩu, CMND/CCCD' },
-        'KS': { name: 'Khai sinh', time: '15 phút', docs: 'Giấy chứng sinh, CMND bố mẹ' },
-        'KT': { name: 'Khai tử', time: '15 phút', docs: 'Giấy báo tử, CMND người khai' }
-      };
+    async function updateServiceInfo() {
+      if (!selectedService) {
+        document.getElementById('service-info').innerHTML = '<p class="text-muted text-center">Vui lòng chọn dịch vụ</p>';
+        return;
+      }
 
-      const service = services[selectedService];
-      serviceInfo.innerHTML = `
-        <h6>${service.name}</h6>
-        <p class="small mb-1"><strong>Thời gian xử lý:</strong> ${service.time}</p>
-        <p class="small mb-1"><strong>Giấy tờ cần:</strong> ${service.docs}</p>
-        <p class="small text-muted">Vui lòng mang đầy đủ giấy tờ khi đến hẹn</p>
-      `;
+      try {
+        const response = await fetch(`/api/services/${selectedService}`, {
+          credentials: 'include'
+        });
+        if (response.ok) {
+          const service = await response.json();
+          const serviceInfo = document.getElementById('service-info');
+          serviceInfo.innerHTML = `
+            <h6>${service.name}</h6>
+            <p class="small mb-1"><strong>Thời gian xử lý:</strong> ${service.processingTime || 15}-${(service.processingTime || 15) + 5} phút</p>
+            <p class="small mb-1"><strong>Giấy tờ cần:</strong> ${service.requiredDocuments || 'Theo quy định'}</p>
+            <p class="small text-muted">Vui lòng mang đầy đủ giấy tờ khi đến hẹn</p>
+          `;
+        }
+      } catch (error) {
+        console.error('Error loading service info:', error);
+      }
     }
 
-    function updateAppointmentSummary() {
+    async function updateAppointmentSummary() {
       const summary = document.getElementById('appointment-summary');
       const confirmBtn = document.getElementById('confirm-btn');
 
       if (selectedDate && selectedTime && selectedService) {
         const date = new Date(selectedDate);
         const dateStr = date.toLocaleDateString('vi-VN');
-        
+
+        let serviceName = 'Dịch vụ';
+        try {
+          const response = await fetch(`/api/services/${selectedService}`, {
+            credentials: 'include'
+          });
+          if (response.ok) {
+            const service = await response.json();
+            serviceName = service.name;
+          }
+        } catch (error) {
+          console.error('Error loading service name:', error);
+        }
+
         summary.innerHTML = `
-          <p class="mb-1"><strong>Dịch vụ:</strong> ${getServiceName(selectedService)}</p>
+          <p class="mb-1"><strong>Dịch vụ:</strong> ${serviceName}</p>
           <p class="mb-1"><strong>Ngày:</strong> ${dateStr}</p>
           <p class="mb-0"><strong>Giờ:</strong> ${selectedTime}</p>
         `;
@@ -400,45 +458,41 @@
       }
     }
 
-    function getServiceName(code) {
-      const names = {
-        'CCCD': 'Cấp đổi CCCD',
-        'HK': 'Đăng ký hộ khẩu',
-        'KS': 'Khai sinh',
-        'KT': 'Khai tử'
-      };
-      return names[code] || 'Dịch vụ';
-    }
-
     async function confirmAppointment() {
       try {
-        const token = localStorage.getItem('token');
+        if (!selectedService || !selectedDate || !selectedTime) {
+          alert('Vui lòng chọn đầy đủ thông tin');
+          return;
+        }
+
         const appointmentDateTime = `${selectedDate}T${selectedTime}:00`;
 
         const response = await fetch('/api/appointments', {
           method: 'POST',
+          credentials: 'include',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            serviceId: 1, // Should be dynamic based on selected service
+            serviceId: parseInt(selectedService),
             appointmentTime: appointmentDateTime,
-            note: `Đặt lịch hẹn cho dịch vụ ${getServiceName(selectedService)}`
+            note: `Đặt lịch hẹn`
           })
         });
 
         if (response.ok) {
           alert('Đặt lịch hẹn thành công!');
-          window.location.href = 'dashboard.html';
+          window.location.href = '/citizen/dashboard';
         } else {
-          throw new Error('Lỗi khi đặt lịch');
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Lỗi khi đặt lịch');
         }
       } catch (error) {
         console.error('Error creating appointment:', error);
-        alert('Lỗi khi đặt lịch hẹn. Vui lòng thử lại.');
+        alert('Lỗi khi đặt lịch hẹn: ' + error.message);
       }
     }
   </script>
 </body>
+
 </html>

@@ -19,22 +19,24 @@
         Vai trò: <span class="fw-semibold" id="userRole">Cán bộ</span>
       </div>
       <div class="dropdown">
-        <a class="d-flex align-items-center btn btn-sm btn-outline-primary rounded-pill dropdown-toggle" href="#" 
-           role="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="d-flex align-items-center btn btn-sm btn-outline-primary rounded-pill dropdown-toggle" href="#"
+          role="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fas fa-user-circle fs-5 me-2"></i>
           <span id="userName">Cán bộ A</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3">
-          <li><a class="dropdown-item d-flex align-items-center gap-2" href="profile.html">
-            <i class="fas fa-user me-2"></i> Hồ sơ cá nhân
-          </a></li>
+          <li><a class="dropdown-item d-flex align-items-center gap-2" href="/citizen/profile">
+              <i class="fas fa-user me-2"></i> Hồ sơ cá nhân
+            </a></li>
           <li><a class="dropdown-item d-flex align-items-center gap-2" href="dashboard.html">
-            <i class="fas fa-home me-2"></i> Trang chủ
-          </a></li>
-          <li><hr class="dropdown-divider"></li>
+              <i class="fas fa-home me-2"></i> Trang chủ
+            </a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           <li><a class="dropdown-item text-danger d-flex align-items-center gap-2" href="#" onclick="logout()">
-            <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
-          </a></li>
+              <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+            </a></li>
         </ul>
       </div>
     </div>
@@ -48,7 +50,7 @@
     }
 
     // Load user info
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       if (user.username) {
         document.getElementById('userName').textContent = user.fullName || user.username;
@@ -57,4 +59,5 @@
     });
   </script>
 </div>
+
 </html>

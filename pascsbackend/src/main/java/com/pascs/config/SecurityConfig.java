@@ -207,6 +207,7 @@ public class SecurityConfig {
 
             // API routes
             .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/queues/stats/public").permitAll() // Public queue stats
             .requestMatchers("/api/**").authenticated()
 
             // Role-based routes
