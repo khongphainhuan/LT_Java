@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
+
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -27,22 +28,52 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, 
-                                  FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        
+        // Chỉ xử lý JWT cho API requests, bỏ qua form login và static resources
+        String requestPath = request.getRequestURI();
+        
+        // Bỏ qua filter cho form login và static resources
+        if (requestPath.startsWith("/auth/") || 
+            requestPath.startsWith("/css/") || 
+            requestPath.startsWith("/js/") || 
+            requestPath.startsWith("/images/") ||
+            requestPath.startsWith("/lib/") ||
+            requestPath.equals("/favicon.ico") ||
+            requestPath.equals("/") ||
+            requestPath.equals("/index")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
+        // Chỉ xử lý JWT cho API requests
+        if (!requestPath.startsWith("/api/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         try {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = 
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                
+                // Kiểm tra nếu user đã được authenticated rồi (từ form login)
+                if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    
+                    logger.debug("JWT authentication set for user: {}", username);
+                }
             }
         } catch (Exception e) {
-            logger.error("Cannot set user authentication: {}", e);
+            logger.error("Cannot set user authentication from JWT: {}", e.getMessage());
+            // Không throw exception, để Spring Security xử lý authentication khác
         }
 
         filterChain.doFilter(request, response);

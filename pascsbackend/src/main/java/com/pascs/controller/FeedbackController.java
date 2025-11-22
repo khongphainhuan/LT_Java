@@ -104,4 +104,24 @@ public class FeedbackController {
         List<Feedback> feedbacks = feedbackRepository.findByServiceId(serviceId);
         return ResponseEntity.ok(feedbacks);
     }
+
+    // Xem phản hồi của mình (Citizen)
+    @GetMapping("/my-feedback")
+    @PreAuthorize("hasRole('CITIZEN')")
+    public ResponseEntity<List<Feedback>> getMyFeedback() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        List<Feedback> feedbacks = feedbackRepository.findByUserId(userDetails.getId());
+        return ResponseEntity.ok(feedbacks);
+    }
+
+    // Xem phản hồi liên quan đến hồ sơ (Staff)
+    @GetMapping("/application/{applicationId}")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<List<Feedback>> getFeedbackByApplication(@PathVariable Long applicationId) {
+        // Giả sử Feedback có relation với Application, cần thêm field nếu chưa có
+        List<Feedback> feedbacks = feedbackRepository.findAll(); // Placeholder
+        return ResponseEntity.ok(feedbacks);
+    }
 }

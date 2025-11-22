@@ -16,27 +16,40 @@ public class UserDetailsImpl implements UserDetails {
     private Long id;
     private String username;
     private String email;
+
     @JsonIgnore
     private String password;
+
+    private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long id, String username, String email, String password,
-                          Collection<? extends GrantedAuthority> authorities) {
+                           boolean enabled,
+                           Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.enabled = enabled;
         this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(User user) {
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
+        String roleRaw = (user.getRole() != null) ? user.getRole().name() : "CITIZEN";
+        String roleWithPrefix = roleRaw.startsWith("ROLE_") ? roleRaw : "ROLE_" + roleRaw;
+
+        GrantedAuthority authority = new SimpleGrantedAuthority(roleWithPrefix);
+
+        System.out.println("🔐 Building UserDetails for: " + user.getUsername());
+        System.out.println("🎭 Original role: " + roleRaw + " -> Authority: " + roleWithPrefix);
+        System.out.println("✅ User enabled: " + user.isEnabled());
 
         return new UserDetailsImpl(
                 user.getId(),
-                user.getUsername(), 
+                user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.isEnabled(),
                 Collections.singletonList(authority));
     }
 
@@ -78,15 +91,18 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
+    
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }

@@ -1,48 +1,31 @@
 package com.pascs.controller;
 
-import com.pascs.payload.response.DashboardStatsResponse;
-import com.pascs.service.AnalyticsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.time.LocalDate;
-import java.util.Map;
+import java.util.Collection;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
-@RestController
-@RequestMapping("/api/dashboard")
+@Controller
 public class DashboardController {
 
-    @Autowired
-    private AnalyticsService analyticsService;
-
-    @GetMapping("/stats")
-    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
-    public ResponseEntity<DashboardStatsResponse> getDashboardStats() {
-        DashboardStatsResponse stats = analyticsService.getDashboardStats();
-        return ResponseEntity.ok(stats);
-    }
-
-    @GetMapping("/stats/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> getAdminDashboardStats() {
-        Map<String, Object> stats = analyticsService.getAdminDashboardStats();
-        return ResponseEntity.ok(stats);
-    }
-
-    @GetMapping("/charts/daily-queue")
-    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> getDailyQueueChart() {
-        Map<String, Object> chartData = analyticsService.getDailyQueueStats(LocalDate.now());
-        return ResponseEntity.ok(chartData);
-    }
-
-    @GetMapping("/charts/service-distribution")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> getServiceDistribution() {
-        Map<String, Object> distribution = analyticsService.getServiceDistribution();
-        return ResponseEntity.ok(distribution);
+    @GetMapping("/dashboard")
+    public String redirectToRoleDashboard(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            
+            System.out.println("User: " + authentication.getName());
+            System.out.println("Roles: " + authorities);
+            
+            if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                return "redirect:/admin/dashboard";
+            } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_STAFF"))) {
+                return "redirect:/staff/dashboard";
+            } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_CITIZEN"))) {
+                return "redirect:/citizen/dashboard";
+            }
+        }
+        return "redirect:/auth/login";
     }
 }

@@ -143,4 +143,46 @@ public class UserController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found!"));
         }
     }
+
+    // API ADMIN: Phê duyệt quyền ưu tiên cho user
+    @PutMapping("/{userId}/priority-eligibility")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updatePriorityEligibility(@PathVariable Long userId, 
+                                                         @RequestParam boolean eligible) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPriorityEligible(eligible);
+            userRepository.save(user);
+            
+            String message = eligible ? "Priority eligibility granted successfully!" 
+                                     : "Priority eligibility revoked successfully!";
+            return ResponseEntity.ok(new MessageResponse(message));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found!"));
+        }
+    }
+
+    // API: Cập nhật priority eligibility cho chính mình (Citizen)
+    @PutMapping("/profile/priority-eligibility")
+    @PreAuthorize("hasRole('CITIZEN')")
+    public ResponseEntity<?> updateMyPriorityEligibility(@RequestParam boolean eligible) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        
+        Optional<User> userOptional = userRepository.findById(userDetails.getId());
+        
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Citizen chỉ có thể request, không tự set
+            // Admin sẽ phê duyệt sau
+            user.setPriorityEligible(eligible);
+            userRepository.save(user);
+            
+            return ResponseEntity.ok(new MessageResponse("Priority eligibility request submitted!"));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found!"));
+        }
+    }
 }

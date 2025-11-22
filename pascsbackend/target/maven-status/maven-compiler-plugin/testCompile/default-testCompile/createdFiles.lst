@@ -1,0 +1,5 @@
+com\pascs\service\ApplicationWorkflowServiceTest.class
+com\pascs\controller\ApplicationControllerTest.class
+com\pascs\service\FeedbackAnalysisServiceTest.class
+com\pascs\service\QueueServiceTest.class
+com\pascs\controller\QueueControllerTest.class

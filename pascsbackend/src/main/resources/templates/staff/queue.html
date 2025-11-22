@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <title>Hàng đợi công dân</title>
@@ -16,12 +16,12 @@
 <body>
   <div class="d-flex">
     <!-- Sidebar -->
-    <div th:replace="fragments/sidebar :: *"></div>
+    <div th:replace="/fragments/sidebar :: sidebar"></div>
 
     <!-- Main Content -->
     <div class="flex-grow-1 d-flex flex-column">
       <!-- Header -->
-      <div th:replace="fragments/header :: *"></div>
+      <div th:replace="/fragments/header :: header"></div>
 
       <main class="p-4">
         <h4 class="fw-bold text-primary mb-4"><i class="bi bi-people"></i> Quản lý hàng đợi</h4>
@@ -39,29 +39,11 @@
                   <th>Thao tác</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr th:each="queue, iterStat : ${queues}">
-                  <td th:text="${iterStat.index + 1}"></td>
-                  <td th:text="${queue.citizenName}"></td>
-                  <td th:text="${queue.serviceName}"></td>
-                  <td th:text="${queue.registerTime}"></td>
-                  <td>
-                    <span class="status-badge"
-                          th:classappend="${queue.status == 'processing'} ? ' bg-processing' :
-                                          ${queue.status == 'done'} ? ' bg-done' :
-                                          ${queue.status == 'pending'} ? ' bg-pending' : ''"
-                          th:text="${queue.statusDisplay}">
-                    </span>
-                  </td>
-                  <td>
-                    <button th:if="${queue.status == 'processing'}" class="btn btn-success btn-sm">
-                      <i class="bi bi-telephone-forward"></i> Gọi tiếp
-                    </button>
-                    <a th:href="@{/staff/application-detail/{id}(id=${queue.id})}"
-                       class="btn btn-outline-primary btn-sm">
-                      <i class="bi" th:classappend="${queue.status == 'processing'} ? ' bi-pencil' : ' bi-eye'"></i>
-                      <span th:text="${queue.status == 'processing'} ? ' Cập nhật' : ' Xem'"></span>
-                    </a>
+              <tbody id="queue-table">
+                <tr>
+                  <td colspan="6" class="text-center text-muted py-4">
+                    <i class="bi bi-people fa-2x mb-3 opacity-25"></i>
+                    <p>Không có người đang chờ</p>
                   </td>
                 </tr>
               </tbody>
@@ -71,8 +53,41 @@
       </main>
 
       <!-- Footer -->
-      <div th:replace="fragments/footer :: *"></div>
+      <div th:replace="/fragments/footer :: footer"></div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = '/login.html';
+        return;
+      }
+      loadQueueData();
+    });
+
+    function loadQueueData() {
+      // Simulate loading queue data
+      const table = document.getElementById('queue-table');
+      table.innerHTML = `
+        <tr>
+          <td>1</td>
+          <td>Nguyễn Văn A</td>
+          <td>Cấp đổi CCCD</td>
+          <td>${new Date().toLocaleTimeString('vi-VN')}</td>
+          <td><span class="status-badge bg-pending">Chờ xử lý</span></td>
+          <td>
+            <button class="btn btn-success btn-sm">
+              <i class="bi bi-telephone-forward"></i> Gọi tiếp
+            </button>
+            <a href="/staff/application-detail.html" class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-eye"></i> Xem
+            </a>
+          </td>
+        </tr>
+      `;
+    }
+  </script>
 </body>
 </html>

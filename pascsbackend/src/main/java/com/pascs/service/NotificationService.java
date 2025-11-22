@@ -6,6 +6,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class NotificationService {
 
@@ -58,6 +61,18 @@ public class NotificationService {
         try {
             String userDestination = "/queue/notifications-" + userId;
             messagingTemplate.convertAndSend(userDestination, message);
+        } catch (Exception e) {
+            System.out.println("WebSocket error for personal notification: " + e.getMessage());
+        }
+    }
+
+    public void sendPersonalNotification(Long userId, String title, String message) {
+        try {
+            String userDestination = "/queue/notifications-" + userId;
+            Map<String, String> notification = new HashMap<>();
+            notification.put("title", title);
+            notification.put("message", message);
+            messagingTemplate.convertAndSend(userDestination, notification);
         } catch (Exception e) {
             System.out.println("WebSocket error for personal notification: " + e.getMessage());
         }

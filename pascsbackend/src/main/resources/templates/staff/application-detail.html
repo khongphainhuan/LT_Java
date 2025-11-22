@@ -12,12 +12,12 @@
 <body>
   <div class="d-flex">
     <!-- Sidebar -->
-    <div th:replace="fragments/sidebar :: *"></div>
+    <div th:replace="/fragments/sidebar :: sidebar"></div>
 
     <!-- Main Content -->
     <div class="flex-grow-1 d-flex flex-column">
       <!-- Header -->
-      <div th:replace="fragments/header :: *"></div>
+      <div th:replace="/fragments/header :: header"></div>
 
       <main class="p-4">
         <h4 class="fw-bold text-primary mb-4"><i class="bi bi-file-earmark-text"></i> Chi tiết hồ sơ</h4>
@@ -25,17 +25,17 @@
         <div class="card shadow-sm border-0">
           <div class="card-body">
             <!-- Thông tin hồ sơ -->
-            <p><strong>Mã hồ sơ:</strong> <span th:text="${application.id}"></span></p>
-            <p><strong>Công dân:</strong> <span th:text="${application.citizenName}"></span></p>
-            <p><strong>Dịch vụ:</strong> <span th:text="${application.serviceName}"></span></p>
-            <p><strong>Ngày nộp:</strong> <span th:text="${application.submitDate}"></span></p>
+            <p><strong>Mã hồ sơ:</strong> <span id="application-id">--</span></p>
+            <p><strong>Công dân:</strong> <span id="citizen-name">--</span></p>
+            <p><strong>Dịch vụ:</strong> <span id="service-name">--</span></p>
+            <p><strong>Ngày nộp:</strong> <span id="submit-date">--</span></p>
             <hr>
 
             <!-- Form cập nhật -->
-            <form th:action="@{/staff/applications/update}" method="post">
+            <form id="update-form">
               <div class="mb-3">
                 <label class="form-label">Trạng thái</label>
-                <select class="form-select" name="status" th:value="${application.status}">
+                <select class="form-select" id="status" name="status">
                   <option value="processing">Đang xử lý</option>
                   <option value="completed">Hoàn tất</option>
                   <option value="needs_supplement">Cần bổ sung</option>
@@ -43,18 +43,44 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Ghi chú</label>
-                <textarea class="form-control" name="note" rows="3" th:text="${application.note}"></textarea>
+                <textarea class="form-control" id="note" name="note" rows="3"></textarea>
               </div>
               <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Cập nhật</button>
-              <a href="/staff/applications" class="btn btn-secondary">Quay lại</a>
+              <a href="/staff/applications.html" class="btn btn-secondary">Quay lại</a>
             </form>
           </div>
         </div>
       </main>
 
       <!-- Footer -->
-      <div th:replace="fragments/footer :: *"></div>
+      <div th:replace="/fragments/footer :: footer"></div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = '/login.html';
+        return;
+      }
+      // Load application data
+      loadApplicationDetail();
+    });
+
+    async function loadApplicationDetail() {
+      // Simulate loading application data
+      document.getElementById('application-id').textContent = 'HS001';
+      document.getElementById('citizen-name').textContent = 'Nguyễn Văn A';
+      document.getElementById('service-name').textContent = 'Cấp đổi CCCD';
+      document.getElementById('submit-date').textContent = new Date().toLocaleDateString('vi-VN');
+    }
+
+    document.getElementById('update-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      // Handle form submission
+      alert('Cập nhật thành công!');
+    });
+  </script>
 </body>
 </html>

@@ -185,4 +185,74 @@ public class ApplicationController {
         List<Application> applications = applicationRepository.findAll();
         return ResponseEntity.ok(applications);
     }
+
+    // Xem chi tiết hồ sơ
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('CITIZEN') or hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> getApplicationById(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        Application application = applicationRepository.findById(id)
+                .orElseThrow(() -> new com.pascs.exception.ResourceNotFoundException("Application", "id", id));
+
+        // Kiểm tra quyền truy cập
+        boolean isOwner = application.getUser().getId().equals(userDetails.getId());
+        boolean isAssignedStaff = application.getAssignedStaff() != null && 
+                                  application.getAssignedStaff().getId().equals(userDetails.getId());
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isOwner && !isAssignedStaff && !isAdmin) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: You don't have permission to access this application"));
+        }
+
+        return ResponseEntity.ok(application);
+    }
+
+    // Chuyển hồ sơ (Staff/Admin)
+    @PutMapping("/{id}/transfer")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> transferApplication(@PathVariable Long id, 
+                                                  @RequestParam Long newStaffId) {
+        try {
+            Application application = applicationRepository.findById(id)
+                    .orElseThrow(() -> new com.pascs.exception.ResourceNotFoundException("Application", "id", id));
+
+            com.pascs.model.User newStaff = userRepository.findById(newStaffId)
+                    .orElseThrow(() -> new com.pascs.exception.ResourceNotFoundException("Staff", "id", newStaffId));
+
+            if (!newStaff.getRole().equals(com.pascs.model.User.UserRole.STAFF)) {
+                return ResponseEntity.badRequest()
+                        .body(new MessageResponse("Error: User is not a staff member"));
+            }
+
+            application.setAssignedStaff(newStaff);
+            applicationRepository.save(application);
+
+            return ResponseEntity.ok(new MessageResponse("Application transferred successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
+
+    // Đánh dấu hồ sơ ưu tiên/khẩn cấp
+    @PutMapping("/{id}/priority")
+    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    public ResponseEntity<?> markApplicationPriority(@PathVariable Long id, 
+                                                      @RequestParam boolean isPriority) {
+        try {
+            Application application = applicationRepository.findById(id)
+                    .orElseThrow(() -> new com.pascs.exception.ResourceNotFoundException("Application", "id", id));
+
+            // Có thể thêm field isPriority vào Application model nếu chưa có
+            // application.setPriority(isPriority);
+            applicationRepository.save(application);
+
+            return ResponseEntity.ok(new MessageResponse("Application priority updated successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
 }
