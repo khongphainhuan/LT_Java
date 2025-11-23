@@ -81,34 +81,93 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        window.location.href = '/login.html';
-        return;
-      }
       loadQueueData();
     });
 
-    function loadQueueData() {
-      // Simulate loading queue data
+    async function loadQueueData() {
+      try {
+        const response = await fetch('/api/queues/current');
+        if (response.ok) {
+          const queues = await response.json();
+          displayQueue(queues);
+        } else {
+          console.error('Failed to load queue data');
+        }
+      } catch (error) {
+        console.error('Error loading queue:', error);
+      }
+    }
+
+    function displayQueue(queues) {
       const table = document.getElementById('queue-table');
-      table.innerHTML = `
+      if (queues.length === 0) {
+        table.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">
+              <i class="bi bi-people fa-2x mb-3 opacity-25"></i>
+              <p>Không có người đang chờ</p>
+            </td>
+          </tr>`;
+        return;
+      }
+
+      table.innerHTML = queues.map((queue, index) => `
         <tr>
-          <td>1</td>
-          <td>Nguyễn Văn A</td>
-          <td>Cấp đổi CCCD</td>
-          <td>${new Date().toLocaleTimeString('vi-VN')}</td>
-          <td><span class="status-badge bg-pending">Chờ xử lý</span></td>
+          <td>${queue.ticketNumber}</td>
+          <td>${queue.user ? (queue.user.fullName || queue.user.username) : 'Khách vãng lai'}</td>
+          <td>${queue.service ? queue.service.name : 'Chưa chọn'}</td>
+          <td>${new Date(queue.createdAt).toLocaleTimeString('vi-VN')}</td>
+          <td><span class="status-badge ${getStatusClass(queue.status)}">${getStatusName(queue.status)}</span></td>
           <td>
-            <button class="btn btn-success btn-sm">
-              <i class="bi bi-telephone-forward"></i> Gọi tiếp
+            <button class="btn btn-success btn-sm" onclick="callNext(${queue.id})">
+              <i class="bi bi-telephone-forward"></i> Gọi
             </button>
-            <a href="/staff/application-detail.html" class="btn btn-outline-primary btn-sm">
+            <a href="/staff/application-detail?id=${queue.id}" class="btn btn-outline-primary btn-sm">
               <i class="bi bi-eye"></i> Xem
             </a>
           </td>
         </tr>
-      `;
+      `).join('');
+    }
+
+    function getStatusClass(status) {
+      switch (status) {
+        case 'WAITING': return 'bg-pending';
+        case 'PROCESSING': return 'bg-processing';
+        case 'COMPLETED': return 'bg-done';
+        default: return 'bg-secondary text-white';
+      }
+    }
+
+    function getStatusName(status) {
+      switch (status) {
+        case 'WAITING': return 'Chờ xử lý';
+        case 'PROCESSING': return 'Đang xử lý';
+        case 'COMPLETED': return 'Hoàn thành';
+        case 'CANCELLED': return 'Đã hủy';
+        default: return status;
+      }
+    }
+
+    async function callNext(queueId) {
+      // Assuming counterId is 1 for now, or fetch from user profile/local storage
+      const counterId = 1;
+      try {
+        const response = await fetch(`/api/queues/call-next?counterId=${counterId}`, {
+          method: 'POST'
+        });
+
+        if (response.ok) {
+          alert('Đã gọi số tiếp theo!');
+          loadQueueData();
+        } else {
+          const error = await response.json();
+          alert('Lỗi: ' + (error.message || 'Không thể gọi số'));
+        }
+      } catch (error) {
+        console.error('Error calling next:', error);
+        alert('Lỗi kết nối!');
+      }
     }
   </script>
 </body>

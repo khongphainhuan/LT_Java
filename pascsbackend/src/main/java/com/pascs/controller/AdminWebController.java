@@ -22,7 +22,7 @@ public class AdminWebController {
             // Thêm thông tin cho fragments
             model.addAttribute("basePath", "/admin");
             model.addAttribute("homeUrl", "/admin/dashboard");
-            model.addAttribute("profileUrl", "/profile");
+            model.addAttribute("profileUrl", "/admin/settings");
             return "admin/dashboard";
         } catch (Exception e) {
             System.err.println("❌ Error rendering admin dashboard: " + e.getMessage());

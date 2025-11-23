@@ -1,36 +1,137 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Báo cáo thống kê | PASCS</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-header {
+      margin-bottom: 25px;
+    }
+
+    .page-title {
+      font-weight: 700;
+      color: #2c3e50;
+    }
+
+    .card-custom {
+      background: #fff;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+
+    .chart-placeholder {
+      height: 350px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #adb5bd;
+      flex-direction: column;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-  <div class="flex h-screen">
-    <div th:replace="fragments/sidebar :: sidebar"></div>
-    <div class="flex-1 flex flex-col">
-      <div th:replace="fragments/header :: header"></div>
 
-      <main class="p-6">
-        <h1 class="text-2xl font-semibold text-blue-700 mb-6">📈 Báo cáo & Thống kê</h1>
+<body>
 
-        <div class="bg-white shadow rounded-lg p-6 mb-6">
-          <div class="flex gap-4 mb-4">
-            <select class="border rounded px-3 py-2">
-              <option>Chọn loại báo cáo</option>
+  <!-- Sidebar -->
+  <div style="position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="container-fluid mt-4">
+      <div class="page-header">
+        <h2 class="page-title">📈 Báo cáo & Thống kê</h2>
+      </div>
+
+      <!-- Filter Section -->
+      <div class="card card-custom p-4">
+        <form class="row g-3 align-items-end">
+          <div class="col-md-4">
+            <label class="form-label fw-medium">Loại báo cáo</label>
+            <select class="form-select">
+              <option selected>Thống kê hồ sơ theo tháng</option>
+              <option>Thống kê đánh giá hài lòng</option>
+              <option>Hiệu suất làm việc cán bộ</option>
             </select>
-            <input type="month" class="border rounded px-3 py-2">
-            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Xem báo cáo</button>
           </div>
+          <div class="col-md-3">
+            <label class="form-label fw-medium">Thời gian</label>
+            <input type="month" class="form-control" value="2023-11">
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="fas fa-filter me-2"></i>Lọc
+            </button>
+          </div>
+          <div class="col-md-3 text-end ms-auto">
+            <button type="button" class="btn btn-outline-success">
+              <i class="fas fa-file-excel me-2"></i>Xuất Excel
+            </button>
+          </div>
+        </form>
+      </div>
 
-          <div class="h-64 bg-gray-100 flex items-center justify-center text-gray-400 italic">
-            (Placeholder biểu đồ / bảng báo cáo)
+      <!-- Charts Section -->
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card card-custom p-4">
+            <h5 class="card-title fw-bold mb-4 text-secondary">Biểu đồ tăng trưởng</h5>
+            <div class="chart-placeholder">
+              <i class="fas fa-chart-line fa-3x mb-3"></i>
+              <span>Biểu đồ đường sẽ hiển thị tại đây</span>
+            </div>
           </div>
         </div>
-      </main>
+        <div class="col-lg-4">
+          <div class="card card-custom p-4">
+            <h5 class="card-title fw-bold mb-4 text-secondary">Tỷ lệ hồ sơ</h5>
+            <div class="chart-placeholder" style="height: 350px;">
+              <i class="fas fa-chart-pie fa-3x mb-3"></i>
+              <span>Biểu đồ tròn</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <div th:replace="fragments/footer :: footer"></div>
+    <!-- Footer -->
+    <div class="mt-auto pt-4">
+      <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -34,8 +34,9 @@
           <li>
             <hr class="dropdown-divider my-2">
           </li>
-          <li><a class="dropdown-item rounded-3 py-2 mb-1 d-flex align-items-center gap-2" th:href="@{/citizen/profile}"
-              onclick="window.location.href='/citizen/profile'; return false;">
+          <li><a class="dropdown-item rounded-3 py-2 mb-1 d-flex align-items-center gap-2"
+              th:href="${profileUrl != null ? profileUrl : '#'}"
+              onclick="if(this.getAttribute('href') === '#') return false;">
               <i class="fas fa-user text-primary me-2" style="width: 20px;"></i> Hồ sơ cá nhân
             </a></li>
           <li><a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2" href="/citizen/dashboard">

@@ -14,24 +14,45 @@
           <i class="fas fa-tachometer-alt me-2"></i> Dashboard
         </a>
       </li>
-      <li class="nav-item mb-1">
+
+      <!-- Staff/Citizen Links -->
+      <li class="nav-item mb-1" id="itemQueue">
         <a href="#" id="linkQueue" class="nav-link text-white">
           <i class="fas fa-list-ol me-2"></i> Hàng đợi
         </a>
       </li>
-      <li class="nav-item mb-1">
+      <li class="nav-item mb-1" id="itemApplications">
         <a href="#" id="linkApplications" class="nav-link text-white">
           <i class="fas fa-folder-open me-2"></i> Hồ sơ
         </a>
       </li>
-      <li class="nav-item mb-1">
+
+      <!-- Admin Links -->
+      <li class="nav-item mb-1" id="itemUsers" style="display: none;">
+        <a href="/admin/users" class="nav-link text-white">
+          <i class="fas fa-users me-2"></i> Người dùng
+        </a>
+      </li>
+      <li class="nav-item mb-1" id="itemServices" style="display: none;">
+        <a href="/admin/services" class="nav-link text-white">
+          <i class="fas fa-concierge-bell me-2"></i> Dịch vụ
+        </a>
+      </li>
+      <li class="nav-item mb-1" id="itemReports" style="display: none;">
+        <a href="/admin/reports" class="nav-link text-white">
+          <i class="fas fa-chart-bar me-2"></i> Báo cáo
+        </a>
+      </li>
+
+      <!-- Shared/Common Links -->
+      <li class="nav-item mb-1" id="itemFeedback">
         <a href="#" id="linkFeedback" class="nav-link text-white">
           <i class="fas fa-comment-alt me-2"></i> Phản hồi
         </a>
       </li>
-      <li class="nav-item mt-3" id="itemAdmin">
-        <a href="/admin/dashboard" class="nav-link text-warning">
-          <i class="fas fa-cog me-2"></i> Admin
+      <li class="nav-item mb-1" id="itemSettings" style="display: none;">
+        <a href="/admin/settings" class="nav-link text-white">
+          <i class="fas fa-cog me-2"></i> Cấu hình
         </a>
       </li>
     </ul>
@@ -49,20 +70,36 @@
       const role = user.role;
 
       const linkDashboard = document.getElementById('linkDashboard');
+      const itemQueue = document.getElementById('itemQueue');
       const linkQueue = document.getElementById('linkQueue');
+      const itemApplications = document.getElementById('itemApplications');
       const linkApplications = document.getElementById('linkApplications');
+      const itemFeedback = document.getElementById('itemFeedback');
       const linkFeedback = document.getElementById('linkFeedback');
-      const itemAdmin = document.getElementById('itemAdmin');
+
+      // Admin items
+      const itemUsers = document.getElementById('itemUsers');
+      const itemServices = document.getElementById('itemServices');
+      const itemReports = document.getElementById('itemReports');
+      const itemSettings = document.getElementById('itemSettings');
 
       if (role === 'ADMIN' || role === 'ROLE_ADMIN') {
         document.getElementById('sidebarTitle').textContent = 'Quản trị - PASCS';
         document.getElementById('sidebarSubtitle').textContent = 'Quản trị hệ thống';
 
         linkDashboard.href = '/admin/dashboard';
-        linkQueue.href = '/staff/queue'; // Admin can view staff queue
-        linkApplications.href = '/staff/applications'; // Admin can view applications
+
+        // Hide Staff/Citizen specific items
+        itemQueue.style.display = 'none';
+        itemApplications.style.display = 'none';
+
+        // Show Admin items
+        itemUsers.style.display = 'block';
+        itemServices.style.display = 'block';
+        itemReports.style.display = 'block';
+        itemSettings.style.display = 'block';
+
         linkFeedback.href = '/admin/feedback';
-        itemAdmin.style.display = 'none';
       } else if (role === 'STAFF' || role === 'ROLE_STAFF') {
         document.getElementById('sidebarTitle').textContent = 'Cán bộ - PASCS';
         document.getElementById('sidebarSubtitle').textContent = 'Quản lý hồ sơ & hàng đợi';
@@ -70,8 +107,8 @@
         linkDashboard.href = '/staff/dashboard';
         linkQueue.href = '/staff/queue';
         linkApplications.href = '/staff/applications';
-        linkFeedback.parentElement.style.display = 'none'; // Staff doesn't have feedback page yet
-        itemAdmin.style.display = 'none';
+
+        itemFeedback.style.display = 'none'; // Staff doesn't have feedback page yet
       } else {
         document.getElementById('sidebarTitle').textContent = 'Công dân - PASCS';
         document.getElementById('sidebarSubtitle').textContent = 'Cổng dịch vụ công';
@@ -79,8 +116,8 @@
         linkDashboard.href = '/citizen/dashboard';
         linkQueue.href = '/citizen/take-number';
         linkApplications.href = '/citizen/my-applications';
-        linkFeedback.parentElement.style.display = 'none'; // Citizen feedback not implemented in sidebar yet
-        itemAdmin.style.display = 'none';
+
+        itemFeedback.style.display = 'none'; // Citizen feedback not implemented in sidebar yet
       }
     });
   </script>

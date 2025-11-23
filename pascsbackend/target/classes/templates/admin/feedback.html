@@ -1,49 +1,193 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Phản hồi công dân | PASCS</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-header {
+      margin-bottom: 25px;
+    }
+
+    .page-title {
+      font-weight: 700;
+      color: #2c3e50;
+    }
+
+    .card-custom {
+      background: #fff;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .table-custom th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #495057;
+      border-bottom: 2px solid #e9ecef;
+    }
+
+    .table-custom td {
+      vertical-align: middle;
+    }
+
+    .btn-action {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background-color: #e9ecef;
+    }
+  </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800">
-  <div class="flex h-screen">
+<body>
+
+  <!-- Sidebar -->
+  <div style="position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;">
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
-    <div class="flex-1 flex flex-col">
-      <div th:replace="~{fragments/header :: header}"></div>
+  </div>
 
-      <main class="p-6">
-        <h1 class="text-2xl font-semibold text-blue-700 mb-6">💬 Phản hồi công dân</h1>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div th:replace="~{fragments/header :: header}"></div>
 
-        <div class="bg-white shadow rounded-lg p-6">
-          <table class="min-w-full border border-gray-200">
-            <thead class="bg-blue-100 text-blue-700">
+    <div class="container-fluid mt-4">
+      <div class="page-header d-flex justify-content-between align-items-center">
+        <h2 class="page-title">💬 Phản hồi công dân</h2>
+        <button class="btn btn-outline-primary">
+          <i class="fas fa-download me-2"></i>Xuất báo cáo
+        </button>
+      </div>
+
+      <div class="card card-custom p-4">
+        <div class="table-responsive">
+          <table class="table table-hover table-custom">
+            <thead>
               <tr>
-                <th class="py-2 px-4 text-left">Họ tên</th>
-                <th class="py-2 px-4 text-left">Nội dung phản hồi</th>
-                <th class="py-2 px-4 text-left">Ngày gửi</th>
-                <th class="py-2 px-4 text-right">Thao tác</th>
+                <th>Họ tên</th>
+                <th>Nội dung phản hồi</th>
+                <th>Ngày gửi</th>
+                <th>Trạng thái</th>
+                <th class="text-end">Thao tác</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-t hover:bg-gray-50">
-                <td class="py-2 px-4">--</td>
-                <td class="py-2 px-4 text-gray-400 italic">Chưa có phản hồi</td>
-                <td class="py-2 px-4">--</td>
-                <td class="py-2 px-4 text-right">
-                  <button class="text-blue-600 hover:underline">Xem</button> |
-                  <button class="text-red-600 hover:underline">Xóa</button>
+              <!-- Empty State -->
+              <tr>
+                <td colspan="5" class="text-center py-5">
+                  <div class="text-muted">
+                    <i class="fas fa-inbox fa-3x mb-3 opacity-25"></i>
+                    <p>Chưa có phản hồi nào từ công dân</p>
+                  </div>
                 </td>
               </tr>
+              <!-- Example Row (Hidden/Commented for real data) -->
+              <!--
+                            <tr>
+                                <td class="fw-medium">Nguyễn Văn A</td>
+                                <td>Thái độ phục vụ rất tốt...</td>
+                                <td>20/11/2023</td>
+                                <td><span class="badge bg-success-subtle text-success">Đã xem</span></td>
+                                <td class="text-end">
+                                    <a href="#" class="btn-action text-primary" title="Xem chi tiết"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn-action text-danger" title="Xóa"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            -->
             </tbody>
           </table>
         </div>
-      </main>
+      </div>
+    </div>
 
+    <!-- Footer -->
+    <div class="mt-auto pt-4">
       <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      loadFeedback();
+    });
+
+    async function loadFeedback() {
+      try {
+        const response = await fetch('/api/feedback');
+        if (response.ok) {
+          const feedbacks = await response.json();
+          displayFeedback(feedbacks);
+        } else {
+          console.error('Failed to load feedback');
+        }
+      } catch (error) {
+        console.error('Error loading feedback:', error);
+      }
+    }
+
+    function displayFeedback(feedbacks) {
+      const tbody = document.querySelector('tbody');
+      if (feedbacks.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center py-5">
+              <div class="text-muted">
+                <i class="fas fa-inbox fa-3x mb-3 opacity-25"></i>
+                <p>Chưa có phản hồi nào từ công dân</p>
+              </div>
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tbody.innerHTML = feedbacks.map(item => `
+        <tr>
+          <td class="fw-medium">${item.user ? (item.user.fullName || item.user.username) : 'Ẩn danh'}</td>
+          <td>
+            <div class="text-truncate" style="max-width: 300px;">${item.comment}</div>
+            <small class="text-muted">Dịch vụ: ${item.service ? item.service.name : 'Chung'}</small>
+          </td>
+          <td>${new Date(item.createdAt).toLocaleDateString('vi-VN')}</td>
+          <td><span class="badge bg-success-subtle text-success">Đã nhận</span></td>
+          <td class="text-end">
+            <button class="btn-action text-primary" title="Xem chi tiết"><i class="fas fa-eye"></i></button>
+          </td>
+        </tr>
+      `).join('');
+    }
+  </script>
 </body>
 
 </html>
