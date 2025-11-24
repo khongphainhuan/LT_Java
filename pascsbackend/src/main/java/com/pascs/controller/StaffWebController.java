@@ -46,4 +46,9 @@ public class StaffWebController {
     public String profile() {
         return "staff/profile";
     }
+
+    @GetMapping("/feedback")
+    public String feedback() {
+        return "staff/feedback";
+    }
 }

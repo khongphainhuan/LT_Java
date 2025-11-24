@@ -46,4 +46,9 @@ public class CitizenWebController {
     public String profile() {
         return "citizen/profile";
     }
+
+    @GetMapping("/feedback")
+    public String feedback() {
+        return "citizen/feedback";
+    }
 }

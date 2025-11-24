@@ -59,7 +59,7 @@
 
         <div class="container-fluid mt-4">
             <div class="page-header d-flex justify-content-between align-items-center">
-                <h2 class="page-title">📝 Thông tin Dịch vụ</h2>
+                <h2 class="page-title" id="form-title">📝 Thông tin Dịch vụ</h2>
                 <a href="/admin/services" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-2"></i>Quay lại
                 </a>
@@ -68,22 +68,24 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="card card-custom p-4">
-                        <form>
+                        <form id="service-form">
                             <div class="mb-3">
                                 <label class="form-label fw-medium">Mã dịch vụ <span
                                         class="text-danger">*</span></label>
-                                <input type="text" class="form-control" placeholder="VD: DV001" required>
+                                <input type="text" class="form-control" id="service-code" placeholder="VD: DV001"
+                                    required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-medium">Tên dịch vụ <span
                                         class="text-danger">*</span></label>
-                                <input type="text" class="form-control" placeholder="Nhập tên dịch vụ" required>
+                                <input type="text" class="form-control" id="service-name" placeholder="Nhập tên dịch vụ"
+                                    required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-medium">Mô tả</label>
-                                <textarea class="form-control" rows="4"
+                                <textarea class="form-control" id="service-description" rows="4"
                                     placeholder="Mô tả chi tiết về dịch vụ..."></textarea>
                             </div>
 
@@ -94,7 +96,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-medium">Thời gian xử lý (Ngày)</label>
-                                    <input type="number" class="form-control" placeholder="1">
+                                    <input type="number" class="form-control" id="service-time" placeholder="1" min="1">
                                 </div>
                             </div>
 
@@ -143,7 +145,9 @@
 
         async function loadServiceData(id) {
             try {
-                const response = await fetch(`/api/services/${id}`);
+                const response = await fetch(`/api/services/${id}`, {
+                    credentials: 'include'
+                });
                 if (response.ok) {
                     const service = await response.json();
                     document.getElementById('service-code').value = service.code;
@@ -179,6 +183,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
+                    credentials: 'include',
                     body: JSON.stringify(data)
                 });
 

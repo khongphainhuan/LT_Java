@@ -108,7 +108,7 @@
         linkQueue.href = '/staff/queue';
         linkApplications.href = '/staff/applications';
 
-        itemFeedback.style.display = 'none'; // Staff doesn't have feedback page yet
+        linkFeedback.href = '/staff/feedback';
       } else {
         document.getElementById('sidebarTitle').textContent = 'Công dân - PASCS';
         document.getElementById('sidebarSubtitle').textContent = 'Cổng dịch vụ công';
@@ -117,7 +117,7 @@
         linkQueue.href = '/citizen/take-number';
         linkApplications.href = '/citizen/my-applications';
 
-        itemFeedback.style.display = 'none'; // Citizen feedback not implemented in sidebar yet
+        linkFeedback.href = '/citizen/feedback';
       }
     });
   </script>
